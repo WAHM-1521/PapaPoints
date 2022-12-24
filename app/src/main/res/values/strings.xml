@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">PapaPoints</string>
+    <string name="welcome_message">Welcome to the PAPA POINTS App!</string>
+    <string name="child_details">Please Enter Child Details</string>
+    <string name="button_complete_task">Complete Task</string>
+</resources> 
