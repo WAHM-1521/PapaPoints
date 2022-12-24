@@ -60,13 +60,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
-                /*
-                        val completeTaskButton = findViewById<Button>(R.id.button_complete_task)
-                completeTaskButton.setOnClickListener {
-                    // Handle task completion action here
-                }
-                * */
-
             }
         }
     }
