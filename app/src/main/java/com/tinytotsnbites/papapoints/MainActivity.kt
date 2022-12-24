@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         // Load the name from SharedPreferences
         val sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         var name = sharedPreferences.getString("name", "")
-        var age = sharedPreferences.getInt("age", 0)
+        var age = sharedPreferences.getString("age", "")
 
         if (name != null) {
             if (name.isNotEmpty()) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 val completeTaskButton = findViewById<Button>(R.id.button_complete_task)
                 completeTaskButton.setOnClickListener {
                     name = nameEditText.text.toString()
-                    age = ageEditText.text.toString().toInt()
+                    age = ageEditText.text.toString()
 
                     if(name.isNullOrBlank()) {
                         Snackbar.make(findViewById(R.id.rootView), "Please enter your child's name", Snackbar.LENGTH_SHORT).show()
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         // Save the name and age to SharedPreferences
                         val editor = sharedPreferences.edit()
                         editor.putString("name", name)
-                        editor.putInt("age", age)
+                        editor.putString("age", age)
                         editor.apply()
 
                         // You can now use the name and age values in your app

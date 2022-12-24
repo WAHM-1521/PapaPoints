@@ -3,4 +3,7 @@
     <string name="welcome_message">Welcome to the PAPA POINTS App!</string>
     <string name="child_details">Please Enter Child Details</string>
     <string name="button_complete_task">Complete Task</string>
+    <string name="child_name_hint">Child\'s Name</string>
+    <string name="child_age_hint">Child\'s Age</string>
+    <string name="next">Next</string>
 </resources> 
