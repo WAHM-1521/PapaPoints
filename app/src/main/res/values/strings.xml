@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PapaPoints</string>
     <string name="welcome_message">Welcome to the PAPA POINTS App!</string>
-    <string name="child_details">Please Enter Child Details</string>
+    <string name="child_details">Please enter your child details</string>
     <string name="button_complete_task">Complete Task</string>
     <string name="child_name_hint">Child\'s Name</string>
     <string name="child_age_hint">Child\'s Age</string>
     <string name="next">Next</string>
+    <string name="snack_enter_name">Please enter your child\'s name</string>
+
+    <string-array name="tasks">
+        <item>Brush your Teeth</item>
+        <item>Clean Toys</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+        <item>Brush your Teeth</item>
+        <item>Clean Toys</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+        <item>Brush your Teeth</item>
+        <item>Clean Toys</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+        <item>Finish Homework</item>
+
+    </string-array>
 </resources> 

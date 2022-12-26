@@ -23,10 +23,13 @@ class MainActivity : AppCompatActivity() {
             if (name.isNotEmpty()) {
                 // Name exists, start the RewardActivity
                 //setContentView(R.layout.rewards)
-                val intent = Intent(this, Reward::class.java)
+                //val intent = Intent(this, Reward::class.java)
+                val intent = Intent(this, PointsAndTaskActivity::class.java)
+
                 intent.putExtra("name", name)
                 intent.putExtra("age", age)
                 startActivity(intent)
+                finish()
             } else {
                 setContentView(R.layout.activity_main)
 
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                     age = ageEditText.text.toString()
 
                     if(name.isNullOrBlank()) {
-                        Snackbar.make(findViewById(R.id.rootView), "Please enter your child's name", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name), Snackbar.LENGTH_SHORT).show()
                     } else {
                         // Save the name and age to SharedPreferences
                         val editor = sharedPreferences.edit()
@@ -53,12 +56,13 @@ class MainActivity : AppCompatActivity() {
                         editor.apply()
 
                         // You can now use the name and age values in your app
-                        val intent = Intent(this@MainActivity, Reward::class.java)
+                        //val intent = Intent(this@MainActivity, Reward::class.java)
+                        val intent = Intent(this, PointsAndTaskActivity::class.java)
                         intent.putExtra("name", name)
                         intent.putExtra("age", age)
                         startActivity(intent)
+                        finish()
                     }
-
                 }
             }
         }
