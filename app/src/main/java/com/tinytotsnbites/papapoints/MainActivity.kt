@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
 
                     if(name.isNullOrBlank()) {
                         Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name), Snackbar.LENGTH_SHORT).show()
-                    } else {
+                    } else
+                        if(age.isNullOrBlank()) {
+                            Snackbar.make(findViewById(R.id.rootView), "Please enter your child's Age", Snackbar.LENGTH_SHORT).show()
+                        }
+                    else {
                         // Save the name and age to SharedPreferences
                         val editor = sharedPreferences.edit()
                         editor.putString("name", name)
