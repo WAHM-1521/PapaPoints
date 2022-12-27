@@ -3,17 +3,28 @@ package com.tinytotsnbites.papapoints
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.tinytotsnbites.papapoints.data.AppDatabase
+import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mainScope.launch(Dispatchers.IO) {
+            val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
+        }
         // Load the name from SharedPreferences
         val sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         var name = sharedPreferences.getString("name", "")

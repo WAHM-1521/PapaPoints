@@ -2,6 +2,7 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +11,43 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
+import com.tinytotsnbites.papapoints.data.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.tinytotsnbites.papapoints.data.Task
 
 class PointsAndTaskActivity : AppCompatActivity() {
 
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.points_and_task)
 
-        // Get the list view and set the adapterx
-        val listView = findViewById<ListView>(R.id.listView)
-        val tasks = resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
-            Task((index + 1).toLong(),task, 0f )
+        val taskList: List<Task>
+        mainScope.launch(Dispatchers.IO) {
+            val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
+            withContext(Dispatchers.Main) {
+                updateUI(lists)
+            }
         }
-        val data = tasks.map { Item(it.title, it.points) }
+
+        setContentView(R.layout.points_and_task)
+        Log.d("tushar","showing tasks")
+        // Get the list view and set the adapterx
+//        val listView = findViewById<ListView>(R.id.listView)
+//        val tasks = resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
+//            Task((index + 1).toLong(),task, 0f )
+//        }
+//        val data = tasks.map { Item(it.title, it.points) }
+//        val adapter = ListAdapter(this, data)
+//        listView.adapter = adapter
+    }
+
+    private fun updateUI(lists: List<Task>) {
+        val listView = findViewById<ListView>(R.id.listView)
+        val data = lists.map { Item(it.taskName, it.taskId) }
         val adapter = ListAdapter(this, data)
         listView.adapter = adapter
     }
@@ -66,7 +91,7 @@ class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
         // Bind the data to the view
         val item = getItem(position) as Item
         holder.textView.text = item.text
-        holder.ratingBar.rating = item.rating
+        holder.ratingBar.rating = 0f
 
         return view
     }
@@ -79,4 +104,4 @@ class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
 }
 
 // Data class to represent an item in the list
-data class Item(val text: String, val rating: Float)
+data class Item(val text: String, val rating: Long)
