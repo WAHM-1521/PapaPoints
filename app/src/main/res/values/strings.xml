@@ -7,6 +7,9 @@
     <string name="child_age_hint">Child\'s Age</string>
     <string name="next">Next</string>
     <string name="snack_enter_name">Please enter your child\'s name</string>
+    <string name="add_task">Add Task</string>
+    <string name="enter_task_name">Enter task name</string>
+    <string name="add">Add</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>
