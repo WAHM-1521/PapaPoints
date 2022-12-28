@@ -2,15 +2,13 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.RatingBar
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.data.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,16 +23,11 @@ class PointsAndTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val taskList: List<Task>
-        mainScope.launch(Dispatchers.IO) {
-            val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
-            withContext(Dispatchers.Main) {
-                updateUI(lists)
-            }
-        }
+        refreshTasks()
 
         setContentView(R.layout.points_and_task)
-        Log.d("tushar","showing tasks")
+        manageAddingNewTask()
+
         // Get the list view and set the adapterx
 //        val listView = findViewById<ListView>(R.id.listView)
 //        val tasks = resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
@@ -43,6 +36,44 @@ class PointsAndTaskActivity : AppCompatActivity() {
 //        val data = tasks.map { Item(it.title, it.points) }
 //        val adapter = ListAdapter(this, data)
 //        listView.adapter = adapter
+    }
+
+    private fun refreshTasks() {
+        mainScope.launch(Dispatchers.IO) {
+            val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
+            withContext(Dispatchers.Main) {
+                updateUI(lists)
+            }
+        }
+    }
+
+    private fun manageAddingNewTask() {
+        val addTaskButton = findViewById<Button>(R.id.addTaskButton)
+        addTaskButton.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null)
+            val taskEditText = dialogView.findViewById<EditText>(R.id.taskNameEditText)
+            val addButton = dialogView.findViewById<Button>(R.id.addButton)
+
+            val alertDialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create()
+
+            addButton.setOnClickListener {
+                // Add the task to the database here
+                if(taskEditText.text.isNotEmpty()) {
+                    val task = Task(taskName = taskEditText.text.toString())
+                    mainScope.launch (Dispatchers.IO) {
+                        AppDatabase.getInstance(applicationContext).taskDao().insert(task)
+                        refreshTasks()
+                        withContext(Dispatchers.Main) {
+                            Snackbar.make(findViewById(R.id.topLayout), "Task Added", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                alertDialog.dismiss()
+            }
+            alertDialog.show()
+        }
     }
 
     private fun updateUI(lists: List<Task>) {

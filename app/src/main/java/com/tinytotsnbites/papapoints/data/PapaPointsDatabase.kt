@@ -11,7 +11,7 @@ import com.tinytotsnbites.papapoints.utilities.Converters
 import com.tinytotsnbites.papapoints.utilities.DATABASE_NAME
 import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
 
-@Database(entities = [Child::class, Task::class, Rating::class], version = 1)
+@Database(entities = [Child::class, Task::class, Rating::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun childDao(): ChildDao
@@ -46,6 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
                         }
                     }
                 )
+                .fallbackToDestructiveMigration()
                 .build()
         }
 
