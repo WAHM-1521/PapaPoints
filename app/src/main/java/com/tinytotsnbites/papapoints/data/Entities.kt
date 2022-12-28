@@ -14,7 +14,7 @@ data class Child(
 
 @Entity
 data class Task(
-    @PrimaryKey @ColumnInfo(name  = "id") val taskId: Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name  = "id") val taskId: Long = 0,
     @ColumnInfo(name = "task_name") val taskName: String
 )
 

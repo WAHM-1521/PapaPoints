@@ -11,7 +11,6 @@ import com.tinytotsnbites.papapoints.data.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
-import kotlinx.coroutines.withContext
 
 class PapaPointsDatabaseWorker(
     context: Context,
@@ -21,8 +20,8 @@ class PapaPointsDatabaseWorker(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO){
         try {
             val database  = AppDatabase.getInstance(applicationContext)
-            val taskList: List<Task> = applicationContext.resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
-                Task((index + 1).toLong(), task)
+            val taskList: List<Task> = applicationContext.resources.getStringArray(R.array.tasks).mapIndexed {
+                    index, task -> Task(taskName = task)
             }
             database.taskDao().insertAll(taskList)
             Result.success()
