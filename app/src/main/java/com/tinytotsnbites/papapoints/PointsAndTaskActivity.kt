@@ -30,15 +30,14 @@ class PointsAndTaskActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        populateChildDetails()
-
-        refreshTasks()
 
         setContentView(R.layout.points_and_task)
+
+        populateChildDetails()
+        refreshTasks()
+        manageAddingNewTask()
 
 //        viewPager = findViewById(R.id.view_pager)
 //        tabLayout = findViewById(R.id.tab_layout)
@@ -60,17 +59,7 @@ class PointsAndTaskActivity : AppCompatActivity() {
                 else -> "Tomorrow"
             }
         }.attach()*/
-    manageAddingNewTask()
-
-    // Get the list view and set the adapterx
-//        val listView = findVQsaiewById<ListView>(R.id.listView)
-//        val tasks = resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
-//            Task((index + 1).toLong(),task, 0f )
-//        }
-//        val data = tasks.map { Item(it.title, it.points) }
-//        val adapter = ListAdapter(this, data)
-//        listView.adapter = adapter
-}
+    }
 
     private fun populateChildDetails() {
         mainScope.launch(Dispatchers.IO) {
@@ -82,29 +71,19 @@ class PointsAndTaskActivity : AppCompatActivity() {
     }
 
     private fun showChildDetails(child:Child) {
-       // val name = intent.getStringExtra("name")
-       // val age = intent.getIntExtra("age", 0)
-
         val nameTextView = findViewById<TextView>(R.id.text_view_name)
         nameTextView.text = child.name
 
         val imageView = findViewById<ImageView>(R.id.imageView)
         val gender = child.gender
+
         Log.d("Ridhi", "Gender is $gender")
+
         if(gender.equals("Male")) {
-
-            Log.d("Ridhi", "Gender is Male, set male image")
             imageView.setImageResource(R.drawable.male_image)
+        } else if(gender.equals("Female")) {
+            imageView.setImageResource(R.drawable.female_image)
         }
-            else
-            if(gender.equals("Female")) {
-                Log.d("Ridhi", "Gender is Female, set female image")
-
-                imageView.setImageResource(R.drawable.female_image)
-            }
-
-
-
     }
 
     private fun getChildDetails() : Child {
