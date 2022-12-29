@@ -2,14 +2,22 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tinytotsnbites.papapoints.data.AppDatabase
+import com.tinytotsnbites.papapoints.data.Child
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,23 +27,88 @@ import com.tinytotsnbites.papapoints.data.Task
 class PointsAndTaskActivity : AppCompatActivity() {
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        populateChildDetails()
 
         refreshTasks()
 
         setContentView(R.layout.points_and_task)
-        manageAddingNewTask()
 
-        // Get the list view and set the adapterx
-//        val listView = findViewById<ListView>(R.id.listView)
+//        viewPager = findViewById(R.id.view_pager)
+//        tabLayout = findViewById(R.id.tab_layout)
+//
+//        /*val adapter = MyFragmentStateAdapter(this)
+//        viewPager.adapter = adapter
+//        tabLayout.setupWithViewPager(viewPager)*/
+//
+//        tabLayout.setTabTextColors(
+//            ContextCompat.getColor(this, R.color.colorPrimary),
+//            ContextCompat.getColor(this, R.color.colorAccent)
+//        )
+//        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent))
+
+       /* TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Yesterday"
+                1 -> "Today"
+                else -> "Tomorrow"
+            }
+        }.attach()*/
+    manageAddingNewTask()
+
+    // Get the list view and set the adapterx
+//        val listView = findVQsaiewById<ListView>(R.id.listView)
 //        val tasks = resources.getStringArray(R.array.tasks).mapIndexed { index, task ->
 //            Task((index + 1).toLong(),task, 0f )
 //        }
 //        val data = tasks.map { Item(it.title, it.points) }
 //        val adapter = ListAdapter(this, data)
 //        listView.adapter = adapter
+}
+
+    private fun populateChildDetails() {
+        mainScope.launch(Dispatchers.IO) {
+            val child = getChildDetails()
+            withContext(Dispatchers.Main) {
+                showChildDetails(child)
+            }
+        }
+    }
+
+    private fun showChildDetails(child:Child) {
+       // val name = intent.getStringExtra("name")
+       // val age = intent.getIntExtra("age", 0)
+
+        val nameTextView = findViewById<TextView>(R.id.text_view_name)
+        nameTextView.text = child.name
+
+        val imageView = findViewById<ImageView>(R.id.imageView)
+        val gender = child.gender
+        Log.d("Ridhi", "Gender is $gender")
+        if(gender.equals("Male")) {
+
+            Log.d("Ridhi", "Gender is Male, set male image")
+            imageView.setImageResource(R.drawable.male_image)
+        }
+            else
+            if(gender.equals("Female")) {
+                Log.d("Ridhi", "Gender is Female, set female image")
+
+                imageView.setImageResource(R.drawable.female_image)
+            }
+
+
+
+    }
+
+    private fun getChildDetails() : Child {
+            return(AppDatabase.getInstance(applicationContext).childDao().getById(1))
     }
 
     private fun refreshTasks() {
@@ -83,6 +156,36 @@ class PointsAndTaskActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 }
+
+/*class MyFragmentStateAdapter(pointsAndTaskActivity: PointsAndTaskActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        //TODO("Not yet implemented")
+    }
+
+        private val fragments = listOf(
+            FirstFragment(),
+            SecondFragment(),
+            ThirdFragment()
+        )
+         override fun getItemCount(): Int {
+             return fragments.size
+         }
+         fun createFragment(position: Int): Fragment {
+             returnents[position]
+         }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        //TODO("Not yet implemented")
+    }
+
+//}
+
+         private fun TodayFragment(): Fragment {
+
+         }
+
+
+}*/
 
 // Custom adapter to bind data to the list view
 class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {

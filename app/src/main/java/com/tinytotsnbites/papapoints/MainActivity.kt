@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.data.AppDatabase
+import com.tinytotsnbites.papapoints.data.Child
 import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // Load the name from SharedPreferences
         val sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         var name = sharedPreferences.getString("name", "")
-        var age = sharedPreferences.getString("age", "")
+        //var age = sharedPreferences.getString("age", "")
 
         if (name != null) {
             if (name.isNotEmpty()) {
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, PointsAndTaskActivity::class.java)
 
                 intent.putExtra("name", name)
-                intent.putExtra("age", age)
+                //intent.putExtra("age", age)
                 startActivity(intent)
                 finish()
             } else {
@@ -46,20 +48,48 @@ class MainActivity : AppCompatActivity() {
 
                 val nameEditText = findViewById<EditText>(R.id.edit_text_name)
                 val ageEditText = findViewById<EditText>(R.id.edit_text_age)
-
+                //val gender = findViewById<RadioButton>(R)
                 // Load the name and age from SharedPreferences
 //                var age = sharedPreferences.getInt("age", 0)
 //                nameEditText.setText(name)
                 //ageEditText.setText(age.toString())
+                val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
+                radioGroupGender.setOnCheckedChangeListener { group, checkedId ->
+                    val selectedGender: String = when(checkedId) {
+                        R.id.radio_button_male -> "Male"
+                        R.id.radio_button_female -> "Female"
+                        else ->""
+                    }
 
                 val completeTaskButton = findViewById<Button>(R.id.button_complete_task)
                 completeTaskButton.setOnClickListener {
                     name = nameEditText.text.toString()
-                    age = ageEditText.text.toString()
+                    val age = ageEditText.text.toString()
+                    val ageInt: Int = age.toInt()
+
 
                     if(name.isNullOrBlank()) {
-                        Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name), Snackbar.LENGTH_SHORT).show()
-                    } else {
+                        Snackbar.make(
+                            findViewById(R.id.rootView),
+                            getString(R.string.snack_enter_name),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                       else if(age.isNullOrBlank()) {
+                            Snackbar.make(findViewById(R.id.rootView), "Please enter your Child Age", Snackbar.LENGTH_SHORT).show()
+
+                        }
+                        else {
+                        Log.d("Ridhi", "Gender is $selectedGender")
+
+                        val child = Child(1, name, ageInt, selectedGender)
+                        mainScope.launch(Dispatchers.IO) {
+                            AppDatabase.getInstance(applicationContext).childDao().insert(child)
+                            withContext(Dispatchers.Main) {
+                                startPointsTaskActivity()
+
+                            }
+                        }
                         // Save the name and age to SharedPreferences
                         val editor = sharedPreferences.edit()
                         editor.putString("name", name)
@@ -68,14 +98,21 @@ class MainActivity : AppCompatActivity() {
 
                         // You can now use the name and age values in your app
                         //val intent = Intent(this@MainActivity, Reward::class.java)
-                        val intent = Intent(this, PointsAndTaskActivity::class.java)
+                        /*val intent = Intent(this, PointsAndTaskActivity::class.java)
                         intent.putExtra("name", name)
                         intent.putExtra("age", age)
-                        startActivity(intent)
+                        startActivity(intent)*/
                         finish()
+                    }
                     }
                 }
             }
         }
+    }
+
+    private fun startPointsTaskActivity() {
+        val intent = Intent(this, PointsAndTaskActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

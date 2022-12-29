@@ -1,32 +1,35 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PapaPoints</string>
-    <string name="welcome_message">Welcome to the PAPA POINTS App!</string>
-    <string name="child_details">Please enter your child details</string>
+    <string name="welcome_message">Welcome to the PAPA POINTS!</string>
+    <string name="child_details">Please enter your child\'s details</string>
     <string name="button_complete_task">Complete Task</string>
     <string name="child_name_hint">Child\'s Name</string>
     <string name="child_age_hint">Child\'s Age</string>
     <string name="next">Next</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="snack_enter_name">Please enter your child\'s name</string>
     <string name="add_task">Add Task</string>
     <string name="enter_task_name">Enter task name</string>
     <string name="add">Add</string>
+    <string name="gender">Gender</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>
         <item>Clean Toys</item>
         <item>Finish Homework</item>
-        <item>Finish Homework</item>
-        <item>Finish Homework</item>
-        <item>Brush your Teeth</item>
-        <item>Clean Toys</item>
-        <item>Finish Homework</item>
-        <item>Finish Homework</item>
-        <item>Finish Homework</item>
-        <item>Brush your Teeth</item>
-        <item>Clean Toys</item>
-        <item>Finish Homework</item>
-        <item>Finish Homework</item>
-        <item>Finish Homework</item>
+        <item>Being Helpful</item>
+        <item>Eat Vegetables</item>
+        <item>No Crying</item>
+        <item>Finish Tiffins</item>
+        <item>Read a Book</item>
+        <item>Helped Mommy</item>
+        <item>Less watching TV</item>
+        <item>Clean Table</item>
+        <item>Prepare School Bag</item>
+        <item>Sort Laundry</item>
+        <item>Load Dishwasher</item>
+        <item>Fill Bottles</item>
 
     </string-array>
 </resources> 
