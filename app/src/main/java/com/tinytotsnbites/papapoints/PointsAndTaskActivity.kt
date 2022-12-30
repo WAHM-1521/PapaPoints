@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.tinytotsnbites.papapoints.data.Task
+import com.tinytotsnbites.papapoints.utilities.LogHelper
 
 class PointsAndTaskActivity : AppCompatActivity() {
 
@@ -77,7 +78,7 @@ class PointsAndTaskActivity : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.imageView)
         val gender = child.gender
 
-        Log.d("Ridhi", "Gender is $gender")
+        LogHelper(this).d("Gender is $gender")
 
         if(gender.equals("Male")) {
             imageView.setImageResource(R.drawable.male_image)

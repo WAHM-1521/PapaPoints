@@ -9,6 +9,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.workDataOf
 import com.tinytotsnbites.papapoints.utilities.Converters
 import com.tinytotsnbites.papapoints.utilities.DATABASE_NAME
+import com.tinytotsnbites.papapoints.utilities.LogHelper
 import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
 
 @Database(entities = [Child::class, Task::class, Rating::class], version = 2)
@@ -23,22 +24,20 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile private var instance: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
-            Log.d("tushar","getInstance")
             return instance ?: synchronized(this) {
-                Log.d("tushar", "instance is null - create database")
+                LogHelper(this).d("instance is null - create database")
                 instance ?: buildDatabase(context).also { instance = it }
             }
         }
 
         // Create and pre-populate the database.
         private fun buildDatabase(context: Context): AppDatabase {
-            Log.d("tushar", "starting buildDatabase ")
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                 .addCallback(
                     object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-                            Log.d("tushar", "creating database")
+                            LogHelper(this).d("Creating database")
                             val request = OneTimeWorkRequestBuilder<PapaPointsDatabaseWorker>()
                                 //.setInputData(workDataOf(KEY_FILENAME to PLANT_DATA_FILENAME))
                                 .build()

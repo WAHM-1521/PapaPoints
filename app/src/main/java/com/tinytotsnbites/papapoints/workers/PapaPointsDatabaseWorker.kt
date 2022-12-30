@@ -8,6 +8,7 @@ import androidx.work.WorkerParameters
 import com.tinytotsnbites.papapoints.R
 import com.tinytotsnbites.papapoints.data.Task
 import com.tinytotsnbites.papapoints.data.AppDatabase
+import com.tinytotsnbites.papapoints.utilities.LogHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -26,7 +27,7 @@ class PapaPointsDatabaseWorker(
             database.taskDao().insertAll(taskList)
             Result.success()
         } catch (ex : Exception) {
-            Log.e(TAG, "Error seeding database", ex)
+            LogHelper(this).e("Error seeding database $ex")
             Result.failure()
         }
     }
