@@ -67,6 +67,7 @@ class PointsAndTaskActivity : AppCompatActivity() {
         mainScope.launch(Dispatchers.IO) {
             val child = getChildDetails()
             withContext(Dispatchers.Main) {
+                showTotalPoints()
                 showChildDetails(child)
             }
         }
@@ -85,6 +86,18 @@ class PointsAndTaskActivity : AppCompatActivity() {
             imageView.setImageResource(R.drawable.male_image)
         } else if(gender.equals("Female")) {
             imageView.setImageResource(R.drawable.female_image)
+        }
+    }
+
+    fun showTotalPoints() {
+        val totalPoints = findViewById<TextView>(R.id.text_view_total_points)
+        mainScope.launch(Dispatchers.IO) {
+            val totalPointsValue =
+                AppDatabase.getInstance(applicationContext).ratingDao().getTotalRating()
+            withContext(Dispatchers.Main) {
+                totalPoints.text =
+                    String.format(getString(R.string.total_points), totalPointsValue.toString())
+            }
         }
     }
 
@@ -172,10 +185,10 @@ class PointsAndTaskActivity : AppCompatActivity() {
 }*/
 
 // Custom adapter to bind data to the list view
-class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
+class ListAdapter(private val activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapter() {
 
     private val listScope = CoroutineScope(Dispatchers.Main)
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val inflater: LayoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var data: MutableList<Item> = data.toMutableList()
     private val currentDate = getCalendarInDateFormat()
 
@@ -241,6 +254,7 @@ class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
                     withContext(Dispatchers.Main) {
                         data[position] = data[position].copy(rating = rating)
                         notifyDataSetChanged()
+                        activity.showTotalPoints()
                     }
                 }
             }

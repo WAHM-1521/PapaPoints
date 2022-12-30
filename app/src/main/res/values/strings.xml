@@ -13,6 +13,7 @@
     <string name="enter_task_name">Enter task name</string>
     <string name="add">Add</string>
     <string name="gender">Gender</string>
+    <string name="total_points">Total Points : %s</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>
