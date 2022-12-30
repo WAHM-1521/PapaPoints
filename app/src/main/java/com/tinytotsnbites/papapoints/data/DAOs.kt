@@ -1,6 +1,7 @@
 package com.tinytotsnbites.papapoints.data
 
 import androidx.room.*
+import java.util.*
 
 @Dao
 interface ChildDao {
@@ -39,6 +40,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task WHERE id = :id")
     fun getById(id: Long): Task
+
+    @Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id WHERE rating.date = :date OR rating.date IS NULL")
+    fun getTasksWithRatingForDate(date: Date): List<TaskWithRating>
 }
 
 @Dao

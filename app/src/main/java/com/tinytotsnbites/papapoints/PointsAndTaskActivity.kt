@@ -10,20 +10,21 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.scaleMatrix
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.tinytotsnbites.papapoints.data.AppDatabase
-import com.tinytotsnbites.papapoints.data.Child
+import com.tinytotsnbites.papapoints.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.tinytotsnbites.papapoints.data.Task
 import com.tinytotsnbites.papapoints.utilities.LogHelper
+import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
+import java.util.*
 
 class PointsAndTaskActivity : AppCompatActivity() {
 
@@ -93,9 +94,12 @@ class PointsAndTaskActivity : AppCompatActivity() {
 
     private fun refreshTasks() {
         mainScope.launch(Dispatchers.IO) {
-            val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
+            //val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
+            val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
+                getCalendarInDateFormat())
             withContext(Dispatchers.Main) {
-                updateUI(lists)
+                LogHelper(this).d("tasks with Rating ${tasksWithRating.size}")
+                updateUI(tasksWithRating)
             }
         }
     }
@@ -129,9 +133,9 @@ class PointsAndTaskActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI(lists: List<Task>) {
+    private fun updateUI(lists: List<TaskWithRating>) {
         val listView = findViewById<ListView>(R.id.listView)
-        val data = lists.map { Item(it.taskName, it.taskId) }
+        val data = lists.map { Item(it.task.taskName, it.task.taskId, it.rating) }
         val adapter = ListAdapter(this, data)
         listView.adapter = adapter
     }
@@ -170,8 +174,10 @@ class PointsAndTaskActivity : AppCompatActivity() {
 // Custom adapter to bind data to the list view
 class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
 
+    private val listScope = CoroutineScope(Dispatchers.Main)
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private val data: List<Item> = data
+    private var data: MutableList<Item> = data.toMutableList()
+    private val currentDate = getCalendarInDateFormat()
 
     override fun getCount(): Int {
         return data.size
@@ -205,8 +211,40 @@ class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
         // Bind the data to the view
         val item = getItem(position) as Item
         holder.textView.text = item.text
-        holder.ratingBar.rating = 0f
+        holder.ratingBar.rating = item.rating
 
+        holder.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            // Save the rating to the database here
+            if(fromUser) {
+                listScope.launch(Dispatchers.IO) {
+                    val existingRating = AppDatabase.getInstance(view.context).ratingDao().getByTaskId(item.taskID)
+                    LogHelper(this).d("existing rating for ${item.taskID} is $existingRating")
+                    if(existingRating.isNotEmpty()) {
+                        val ratingToSave = Rating(
+                            ratingId = existingRating.get(0).ratingId,
+                            childId = 1, // Replace with the actual child ID
+                            taskId = item.taskID,
+                            rating = rating,
+                            date = currentDate
+                        )
+                        AppDatabase.getInstance(view.context).ratingDao().update(ratingToSave)
+                    } else {
+                        val ratingToSave = Rating(
+                            ratingId = 0,
+                            childId = 1, // Replace with the actual child ID
+                            taskId = item.taskID,
+                            rating = rating,
+                            date = currentDate
+                        )
+                        AppDatabase.getInstance(view.context).ratingDao().insert(ratingToSave)
+                    }
+                    withContext(Dispatchers.Main) {
+                        data[position] = data[position].copy(rating = rating)
+                        notifyDataSetChanged()
+                    }
+                }
+            }
+        }
         return view
     }
 
@@ -218,4 +256,4 @@ class ListAdapter(context: Context, data: List<Item>) : BaseAdapter() {
 }
 
 // Data class to represent an item in the list
-data class Item(val text: String, val rating: Long)
+data class Item(val text: String, val taskID: Long, val rating: Float)
