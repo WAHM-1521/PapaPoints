@@ -207,20 +207,20 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
         holder.plusButton.setOnClickListener {
             val newRating = item.rating + 1
             LogHelper(this).d("New rating after adding is $newRating")
-            updateDbAndShowPoints(view, item, newRating, position)
+            updateDbAndShowPoints(view, item, newRating)
             holder.ratingBar.rating = newRating.toFloat()
         }
 
         holder.minusButton.setOnClickListener {
             val newRating = item.rating - 1
             LogHelper(this).d("New rating after subtracting is $newRating")
-            updateDbAndShowPoints(view, item, newRating, position)
+            updateDbAndShowPoints(view, item, newRating)
             holder.ratingBar.rating = newRating.toFloat()
         }
 
         holder.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             if(fromUser) {
-                updateDbAndShowPoints(view, item, item.rating+1,position)
+                updateDbAndShowPoints(view, item, item.rating+1)
             }
         }
         return view
@@ -229,8 +229,7 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
     private fun updateDbAndShowPoints(
         view: View,
         item: Item,
-        newRating: Int,
-        position: Int
+        newRating: Int
     ) {
         listScope.launch(Dispatchers.IO) {
             val existingRating =
@@ -256,8 +255,6 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
                 AppDatabase.getInstance(view.context).ratingDao().insert(ratingToSave)
             }
 
-            AppDatabase.getInstance(view.context).taskDao().getTasksWithRatingForDate(
-                getCalendarInDateFormat())
             withContext(Dispatchers.Main) {
                 LogHelper(this).d("new rating is $newRating")
                 //data[position] = data[position].copy(rating = newRating)
