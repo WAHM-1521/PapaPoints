@@ -2,21 +2,15 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.scaleMatrix
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.tinytotsnbites.papapoints.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,14 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
-import java.util.*
 
-class PointsAndTaskActivity : AppCompatActivity() {
+class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList {
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+    private lateinit var adapter: ListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,27 +34,6 @@ class PointsAndTaskActivity : AppCompatActivity() {
         populateChildDetails()
         refreshTasks()
         manageAddingNewTask()
-
-//        viewPager = findViewById(R.id.view_pager)
-//        tabLayout = findViewById(R.id.tab_layout)
-//
-//        /*val adapter = MyFragmentStateAdapter(this)
-//        viewPager.adapter = adapter
-//        tabLayout.setupWithViewPager(viewPager)*/
-//
-//        tabLayout.setTabTextColors(
-//            ContextCompat.getColor(this, R.color.colorPrimary),
-//            ContextCompat.getColor(this, R.color.colorAccent)
-//        )
-//        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent))
-
-       /* TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Yesterday"
-                1 -> "Today"
-                else -> "Tomorrow"
-            }
-        }.attach()*/
     }
 
     private fun populateChildDetails() {
@@ -84,8 +57,6 @@ class PointsAndTaskActivity : AppCompatActivity() {
 
         if(gender.equals("Male")) {
             imageView.setImageResource(R.drawable.male_image)
-        } else if(gender.equals("Female")) {
-            imageView.setImageResource(R.drawable.female_image)
         }
     }
 
@@ -111,7 +82,10 @@ class PointsAndTaskActivity : AppCompatActivity() {
             val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
                 getCalendarInDateFormat())
             withContext(Dispatchers.Main) {
-                LogHelper(this).d("tasks with Rating ${tasksWithRating.size}")
+                LogHelper(this).d("Total tasks ${tasksWithRating.size} : " +
+                        "Task id ${tasksWithRating.get(0).task.taskId}  " +
+                        "is ${tasksWithRating.get(0).task.taskName} " +
+                        "and has rating ${tasksWithRating.get(0).rating}")
                 updateUI(tasksWithRating)
             }
         }
@@ -149,48 +123,43 @@ class PointsAndTaskActivity : AppCompatActivity() {
     private fun updateUI(lists: List<TaskWithRating>) {
         val listView = findViewById<ListView>(R.id.listView)
         val data = lists.map { Item(it.task.taskName, it.task.taskId, it.rating) }
-        val adapter = ListAdapter(this, data)
+        adapter = ListAdapter(this, data)
         listView.adapter = adapter
+        adapter.setOnUpdateListListener(this)
+
+        showTotalPoints()
+    }
+
+    override fun onPointsGiven() {
+        mainScope.launch(Dispatchers.IO) {
+            val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
+                getCalendarInDateFormat())
+            withContext(Dispatchers.Main) {
+                val data = tasksWithRating.map { Item(it.task.taskName, it.task.taskId, it.rating) }
+                adapter.updateData(data)
+                showTotalPoints()
+            }
+        }
     }
 }
 
-/*class MyFragmentStateAdapter(pointsAndTaskActivity: PointsAndTaskActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        //TODO("Not yet implemented")
-    }
-
-        private val fragments = listOf(
-            FirstFragment(),
-            SecondFragment(),
-            ThirdFragment()
-        )
-         override fun getItemCount(): Int {
-             return fragments.size
-         }
-         fun createFragment(position: Int): Fragment {
-             returnents[position]
-         }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //TODO("Not yet implemented")
-    }
-
-//}
-
-         private fun TodayFragment(): Fragment {
-
-         }
-
-
-}*/
-
 // Custom adapter to bind data to the list view
-class ListAdapter(private val activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapter() {
+class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapter() {
 
     private val listScope = CoroutineScope(Dispatchers.Main)
     private val inflater: LayoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var data: MutableList<Item> = data.toMutableList()
     private val currentDate = getCalendarInDateFormat()
+
+    interface UpdatePointsList {
+        fun onPointsGiven()
+    }
+
+    private var listener: UpdatePointsList? = null
+
+    fun setOnUpdateListListener(listener: UpdatePointsList) {
+        this.listener = listener
+    }
 
     override fun getCount(): Int {
         return data.size
@@ -204,6 +173,11 @@ class ListAdapter(private val activity: PointsAndTaskActivity, data: List<Item>)
         return position.toLong()
     }
 
+    fun updateData(newData: List<Item>) {
+        data = newData as MutableList<Item>
+        notifyDataSetChanged()
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
         val holder: ViewHolder
@@ -214,6 +188,8 @@ class ListAdapter(private val activity: PointsAndTaskActivity, data: List<Item>)
             holder = ViewHolder()
             holder.textView = view.findViewById(R.id.textView)
             holder.ratingBar = view.findViewById(R.id.ratingBar)
+            holder.plusButton = view.findViewById(R.id.add_points_button)
+            holder.minusButton = view.findViewById(R.id.remove_points_button)
             view.tag = holder
         } else {
             // Reuse the view holder
@@ -224,50 +200,80 @@ class ListAdapter(private val activity: PointsAndTaskActivity, data: List<Item>)
         // Bind the data to the view
         val item = getItem(position) as Item
         holder.textView.text = item.text
-        holder.ratingBar.rating = item.rating
+        holder.ratingBar.rating = item.rating.toFloat()
+        holder.ratingBar.setRatingValueNew(item.rating)
+
+
+        holder.plusButton.setOnClickListener {
+            val newRating = item.rating + 1
+            LogHelper(this).d("New rating after adding is $newRating")
+            updateDbAndShowPoints(view, item, newRating, position)
+            holder.ratingBar.rating = newRating.toFloat()
+        }
+
+        holder.minusButton.setOnClickListener {
+            val newRating = item.rating - 1
+            LogHelper(this).d("New rating after subtracting is $newRating")
+            updateDbAndShowPoints(view, item, newRating, position)
+            holder.ratingBar.rating = newRating.toFloat()
+        }
 
         holder.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            // Save the rating to the database here
             if(fromUser) {
-                listScope.launch(Dispatchers.IO) {
-                    val existingRating = AppDatabase.getInstance(view.context).ratingDao().getByTaskId(item.taskID)
-                    LogHelper(this).d("existing rating for ${item.taskID} is $existingRating")
-                    if(existingRating.isNotEmpty()) {
-                        val ratingToSave = Rating(
-                            ratingId = existingRating.get(0).ratingId,
-                            childId = 1, // Replace with the actual child ID
-                            taskId = item.taskID,
-                            rating = rating,
-                            date = currentDate
-                        )
-                        AppDatabase.getInstance(view.context).ratingDao().update(ratingToSave)
-                    } else {
-                        val ratingToSave = Rating(
-                            ratingId = 0,
-                            childId = 1, // Replace with the actual child ID
-                            taskId = item.taskID,
-                            rating = rating,
-                            date = currentDate
-                        )
-                        AppDatabase.getInstance(view.context).ratingDao().insert(ratingToSave)
-                    }
-                    withContext(Dispatchers.Main) {
-                        data[position] = data[position].copy(rating = rating)
-                        notifyDataSetChanged()
-                        activity.showTotalPoints()
-                    }
-                }
+                updateDbAndShowPoints(view, item, item.rating+1,position)
             }
         }
         return view
     }
 
+    private fun updateDbAndShowPoints(
+        view: View,
+        item: Item,
+        newRating: Int,
+        position: Int
+    ) {
+        listScope.launch(Dispatchers.IO) {
+            val existingRating =
+                AppDatabase.getInstance(view.context).ratingDao().getByTaskId(item.taskID)
+            LogHelper(this).d("existing rating for task ${item.taskID} is $existingRating")
+            if (existingRating.isNotEmpty()) {
+                val ratingToSave = Rating(
+                    ratingId = existingRating.get(0).ratingId,
+                    childId = 1, // Replace with the actual child ID
+                    taskId = item.taskID,
+                    rating = newRating,
+                    date = currentDate
+                )
+                AppDatabase.getInstance(view.context).ratingDao().update(ratingToSave)
+            } else {
+                val ratingToSave = Rating(
+                    ratingId = 0,
+                    childId = 1, // Replace with the actual child ID
+                    taskId = item.taskID,
+                    rating = newRating,
+                    date = currentDate
+                )
+                AppDatabase.getInstance(view.context).ratingDao().insert(ratingToSave)
+            }
+
+            AppDatabase.getInstance(view.context).taskDao().getTasksWithRatingForDate(
+                getCalendarInDateFormat())
+            withContext(Dispatchers.Main) {
+                LogHelper(this).d("new rating is $newRating")
+                //data[position] = data[position].copy(rating = newRating)
+                listener?.onPointsGiven()
+            }
+        }
+    }
+
     // View holder to optimize the list view
     private class ViewHolder {
         lateinit var textView: TextView
-        lateinit var ratingBar: RatingBar
+        lateinit var ratingBar: CustomRating
+        lateinit var plusButton: Button
+        lateinit var minusButton: Button
     }
 }
 
 // Data class to represent an item in the list
-data class Item(val text: String, val taskID: Long, val rating: Float)
+data class Item(val text: String, val taskID: Long, val rating: Int)

@@ -69,5 +69,5 @@ interface RatingDao {
     fun getByTaskId(taskId: Long): List<Rating>
 
     @Query("SELECT SUM(rating) FROM rating")
-    fun getTotalRating(): Float
+    fun getTotalRating(): Int
 }

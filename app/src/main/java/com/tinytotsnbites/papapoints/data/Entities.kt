@@ -25,12 +25,12 @@ data class Rating(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val ratingId: Long,
     @ColumnInfo(name = "child_id") val childId: Long,
     @ColumnInfo(name = "task_id") val taskId: Long,
-    val rating: Float,
+    val rating: Int,
     val date: Date
 )
 
 @Entity
 data class TaskWithRating(
     @Embedded val task: Task,
-    @ColumnInfo(name = "rating") val rating: Float
+    @ColumnInfo(name = "rating") val rating: Int
 )
