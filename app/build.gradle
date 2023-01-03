@@ -13,9 +13,17 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
+        setProperty("archivesBaseName","PapaPoints")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    /*  Uncomment the below block to rename all the variants of the apk
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "PapaPoints.apk"
+        }
+    } */
 
     buildTypes {
         release {
