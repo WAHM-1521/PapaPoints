@@ -8,24 +8,24 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 import com.tinytotsnbites.papapoints.data.*
+import com.tinytotsnbites.papapoints.utilities.*
+import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.tinytotsnbites.papapoints.utilities.LogHelper
-import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
+import java.util.*
+import java.text.SimpleDateFormat
 
 class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList {
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
 
     private lateinit var adapter: ListAdapter
+    var calendar = Calendar.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +34,24 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         populateChildDetails()
         refreshTasks()
         manageAddingNewTask()
+
+        val dateFormat = SimpleDateFormat("dd MMM yy")
+        val prevButton = findViewById<ImageButton>(R.id.prev_day_button)
+        val textView = findViewById<TextView>(R.id.DayText)  // Get a reference to the TextView in the ViewPager
+
+
+        prevButton.setOnClickListener {
+            calendar.add(Calendar.DATE, -1)  // Reduce the date by one day
+            textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
+            refreshTasks()
+        }
+
+        val nextButton = findViewById<ImageButton>(R.id.next_day_button)
+        nextButton.setOnClickListener {
+            calendar.add(Calendar.DATE, +1)  // Reduce the date by one day
+            textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
+            refreshTasks()
+        }
     }
 
     private fun populateChildDetails() {
@@ -47,8 +65,14 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     }
 
     private fun showChildDetails(child:Child) {
+
+        val dateFormat = SimpleDateFormat("dd MMM yy")
+        val dateText = findViewById<TextView>(R.id.DayText)
+        dateText.text = dateFormat.format(Calendar.getInstance().time)
+
         val nameTextView = findViewById<TextView>(R.id.text_view_name)
         nameTextView.text = child.name
+
 
         val imageView = findViewById<ImageView>(R.id.imageView)
         val gender = child.gender
@@ -80,7 +104,8 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         mainScope.launch(Dispatchers.IO) {
             //val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
             val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
-                getCalendarInDateFormat())
+                getCalendarDateForMidnightTime(calendar)
+            )
             withContext(Dispatchers.Main) {
                 LogHelper(this).d("Total tasks ${tasksWithRating.size} : " +
                         "Task id ${tasksWithRating.get(0).task.taskId}  " +
@@ -133,7 +158,8 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     override fun onPointsGiven() {
         mainScope.launch(Dispatchers.IO) {
             val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
-                getCalendarInDateFormat())
+                getCalendarDateForMidnightTime(calendar)
+            )
             withContext(Dispatchers.Main) {
                 val data = tasksWithRating.map { Item(it.task.taskName, it.task.taskId, it.rating) }
                 adapter.updateData(data)
@@ -142,6 +168,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         }
     }
 }
+
 
 // Custom adapter to bind data to the list view
 class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapter() {
