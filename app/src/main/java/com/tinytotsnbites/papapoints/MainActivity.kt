@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 val completeTaskButton = findViewById<Button>(R.id.button_complete_task)
                 completeTaskButton.setOnClickListener {
                     name = nameEditText.text.toString()
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                     val age = ageEditText.text.toString()
                     val ageInt: Int = age.toInt()
 

@@ -87,7 +87,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         }
     }
 
-    fun showTotalPoints() {
+    private fun showTotalPoints() {
         val totalPoints = findViewById<TextView>(R.id.text_view_total_points)
         mainScope.launch(Dispatchers.IO) {
             val totalPointsValue =
@@ -111,9 +111,9 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             )
             withContext(Dispatchers.Main) {
                 LogHelper(this).d("Total tasks ${tasksWithRating.size} : " +
-                        "Task id ${tasksWithRating.get(0).task.taskId}  " +
-                        "is ${tasksWithRating.get(0).task.taskName} " +
-                        "and has rating ${tasksWithRating.get(0).rating}")
+                        "Task id ${tasksWithRating[0].task.taskId}  " +
+                        "is ${tasksWithRating[0].task.taskName} " +
+                        "and has rating ${tasksWithRating[0].rating}")
                 updateUI(tasksWithRating)
             }
         }
@@ -158,10 +158,33 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         showTotalPoints()
     }
 
-    override fun onPointsGiven() {
+    override fun onPointsGiven(taskID: Long, newRating: Int) {
         mainScope.launch(Dispatchers.IO) {
+            val selectedDate = getCalendarDateForMidnightTime(calendar)
+            val existingRating =
+                AppDatabase.getInstance(applicationContext).ratingDao().getByTaskId(taskID, selectedDate)
+            LogHelper(this).d("existing rating for task ${taskID} is $existingRating")
+            if (existingRating.isNotEmpty()) {
+                val ratingToSave = Rating(
+                    ratingId = existingRating[0].ratingId,
+                    childId = 1, // Replace with the actual child ID
+                    taskId = taskID,
+                    rating = newRating,
+                    date = selectedDate
+                )
+                AppDatabase.getInstance(applicationContext).ratingDao().update(ratingToSave)
+            } else {
+                val ratingToSave = Rating(
+                    ratingId = 0,
+                    childId = 1, // Replace with the actual child ID
+                    taskId = taskID,
+                    rating = newRating,
+                    date = selectedDate
+                )
+                AppDatabase.getInstance(applicationContext).ratingDao().insert(ratingToSave)
+            }
             val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
-                getCalendarDateForMidnightTime(calendar)
+                selectedDate
             )
             withContext(Dispatchers.Main) {
                 val data = tasksWithRating.map { Item(it.task.taskName, it.task.taskId, it.rating) }
@@ -172,17 +195,14 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     }
 }
 
-
 // Custom adapter to bind data to the list view
 class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapter() {
 
-    private val listScope = CoroutineScope(Dispatchers.Main)
     private val inflater: LayoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var data: MutableList<Item> = data.toMutableList()
-    private val currentDate = getCalendarInDateFormat()
 
     interface UpdatePointsList {
-        fun onPointsGiven()
+        fun onPointsGiven(taskID: Long, newRating: Int)
     }
 
     private var listener: UpdatePointsList? = null
@@ -233,12 +253,11 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
         holder.ratingBar.rating = item.rating.toFloat()
         holder.ratingBar.setRatingValueNew(item.rating)
 
-
         holder.plusButton.setOnClickListener {
             val plusButtonSound = MediaPlayer.create(view.context, R.raw.add_points_sound)
             val newRating = item.rating + 1
             LogHelper(this).d("New rating after adding is $newRating")
-            updateDbAndShowPoints(view, item, newRating)
+            listener?.onPointsGiven(item.taskID, newRating)
             holder.ratingBar.rating = newRating.toFloat()
             plusButtonSound.start()
 
@@ -248,55 +267,18 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
             val minusButtonSound = MediaPlayer.create(view.context, R.raw.minus_points_sound)
             val newRating = item.rating - 1
             LogHelper(this).d("New rating after subtracting is $newRating")
-            updateDbAndShowPoints(view, item, newRating)
+            listener?.onPointsGiven(item.taskID, newRating)
             holder.ratingBar.rating = newRating.toFloat()
             minusButtonSound.start()
 
         }
 
-        holder.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+        holder.ratingBar.setOnRatingBarChangeListener { _, _, fromUser ->
             if(fromUser) {
-                updateDbAndShowPoints(view, item, item.rating+1)
+                listener?.onPointsGiven(item.taskID, item.rating+1)
             }
         }
         return view
-    }
-
-    private fun updateDbAndShowPoints(
-        view: View,
-        item: Item,
-        newRating: Int
-    ) {
-        listScope.launch(Dispatchers.IO) {
-            val existingRating =
-                AppDatabase.getInstance(view.context).ratingDao().getByTaskId(item.taskID)
-            LogHelper(this).d("existing rating for task ${item.taskID} is $existingRating")
-            if (existingRating.isNotEmpty()) {
-                val ratingToSave = Rating(
-                    ratingId = existingRating.get(0).ratingId,
-                    childId = 1, // Replace with the actual child ID
-                    taskId = item.taskID,
-                    rating = newRating,
-                    date = currentDate
-                )
-                AppDatabase.getInstance(view.context).ratingDao().update(ratingToSave)
-            } else {
-                val ratingToSave = Rating(
-                    ratingId = 0,
-                    childId = 1, // Replace with the actual child ID
-                    taskId = item.taskID,
-                    rating = newRating,
-                    date = currentDate
-                )
-                AppDatabase.getInstance(view.context).ratingDao().insert(ratingToSave)
-            }
-
-            withContext(Dispatchers.Main) {
-                LogHelper(this).d("new rating is $newRating")
-                //data[position] = data[position].copy(rating = newRating)
-                listener?.onPointsGiven()
-            }
-        }
     }
 
     // View holder to optimize the list view

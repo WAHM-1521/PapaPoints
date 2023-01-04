@@ -41,7 +41,8 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE id = :id")
     fun getById(id: Long): Task
 
-    @Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id WHERE rating.date = :date OR rating.date IS NULL")
+    //@Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id WHERE rating.date = :date OR rating.date IS NULL")
+    @Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id AND rating.date = :date WHERE rating.date IS NULL OR rating.date = :date")
     fun getTasksWithRatingForDate(date: Date): List<TaskWithRating>
 }
 
@@ -65,8 +66,8 @@ interface RatingDao {
     @Query("SELECT * FROM rating WHERE child_id = :childId")
     fun getByChildId(childId: Long): List<Rating>
 
-    @Query("SELECT * FROM rating WHERE task_id = :taskId")
-    fun getByTaskId(taskId: Long): List<Rating>
+    @Query("SELECT * FROM rating WHERE task_id = :taskId AND date = :date")
+    fun getByTaskId(taskId: Long, date: Date): List<Rating>
 
     @Query("SELECT SUM(rating) FROM rating")
     fun getTotalRating(): Int
