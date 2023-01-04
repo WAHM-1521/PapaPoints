@@ -1,6 +1,7 @@
 package com.tinytotsnbites.papapoints
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,20 +38,22 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
 
         val dateFormat = SimpleDateFormat("dd MMM yy")
         val prevButton = findViewById<ImageButton>(R.id.prev_day_button)
+        val nextButton = findViewById<ImageButton>(R.id.next_day_button)
         val textView = findViewById<TextView>(R.id.DayText)  // Get a reference to the TextView in the ViewPager
-
+        val mediaPlayer = MediaPlayer.create(this, R.raw.button_click_calendar)
 
         prevButton.setOnClickListener {
             calendar.add(Calendar.DATE, -1)  // Reduce the date by one day
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
             refreshTasks()
+            mediaPlayer.start()
         }
 
-        val nextButton = findViewById<ImageButton>(R.id.next_day_button)
         nextButton.setOnClickListener {
             calendar.add(Calendar.DATE, +1)  // Reduce the date by one day
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
             refreshTasks()
+            mediaPlayer.start()
         }
     }
 
@@ -232,17 +235,23 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
 
 
         holder.plusButton.setOnClickListener {
+            val plusButtonSound = MediaPlayer.create(view.context, R.raw.add_points_sound)
             val newRating = item.rating + 1
             LogHelper(this).d("New rating after adding is $newRating")
             updateDbAndShowPoints(view, item, newRating)
             holder.ratingBar.rating = newRating.toFloat()
+            plusButtonSound.start()
+
         }
 
         holder.minusButton.setOnClickListener {
+            val minusButtonSound = MediaPlayer.create(view.context, R.raw.minus_points_sound)
             val newRating = item.rating - 1
             LogHelper(this).d("New rating after subtracting is $newRating")
             updateDbAndShowPoints(view, item, newRating)
             holder.ratingBar.rating = newRating.toFloat()
+            minusButtonSound.start()
+
         }
 
         holder.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
