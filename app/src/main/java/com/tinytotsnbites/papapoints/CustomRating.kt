@@ -6,22 +6,13 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
-import com.tinytotsnbites.papapoints.utilities.LogHelper
 
+class CustomRating(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatRatingBar(context, attrs) {
 
-class CustomRating(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatRatingBar(
-    context,
-    attrs
-) {
-
-    private var ratingValue: Int = 0
+    private var ratingValue: Int
     private val bounds = Rect()
     init {
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.CustomRating,
-            0, 0
-        ).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.CustomRating, 0, 0).apply {
             try {
                 ratingValue = getInt(R.styleable.CustomRating_ratingValue, 0)
             } finally {
@@ -44,20 +35,12 @@ class CustomRating(context: Context, attrs: AttributeSet) : androidx.appcompat.w
         paint.getTextBounds(text, 0, text.length, bounds)
         canvas?.drawText(text, x - bounds.exactCenterX(), y - bounds.exactCenterY() - 10, paint)
 
-        if (ratingValue < 0)
-        {
-            LogHelper(this).d(" color red as rating is $ratingValue")
+        if (ratingValue < 0) {
             progressDrawable.setTint(Color.RED)
-        }
-        else if(ratingValue > 0)
-        {
-            LogHelper(this).d(" color primary as rating is $ratingValue")
+        } else if(ratingValue > 0) {
             progressDrawable.setTint(Color.parseColor("#FFBB86FC"))
-        }
-        else
-        {
-            LogHelper(this).d(" color grey as  rating is $ratingValue")
-        progressDrawable.setTint(Color.LTGRAY)
+        } else {
+            progressDrawable.setTint(Color.LTGRAY)
         }
     }
 
