@@ -75,7 +75,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         val gender = child.gender
         LogHelper(this).d("Gender is $gender")
         if(gender.equals("Male")) {
-            imageView.setImageResource(R.drawable.male_image)
+            imageView.setImageResource(R.drawable.ic_male)
         }
     }
 

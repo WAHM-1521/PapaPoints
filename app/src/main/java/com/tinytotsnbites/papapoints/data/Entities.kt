@@ -10,7 +10,7 @@ import java.util.*
 data class Child(
     @PrimaryKey @ColumnInfo(name = "id") val childId: Long,
     @ColumnInfo(name = "child_name") val name: String?,
-    @ColumnInfo(name = "child_age") val age: Int,
+    @ColumnInfo(name = "child_DOB") val dob: Date,
     @ColumnInfo(name = "child_gender") val gender: String
 )
 

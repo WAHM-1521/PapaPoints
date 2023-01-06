@@ -12,7 +12,7 @@ import com.tinytotsnbites.papapoints.utilities.DATABASE_NAME
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
 
-@Database(entities = [Child::class, Task::class, Rating::class], version = 2)
+@Database(entities = [Child::class, Task::class, Rating::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun childDao(): ChildDao

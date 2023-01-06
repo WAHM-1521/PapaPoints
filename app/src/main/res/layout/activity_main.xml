@@ -59,8 +59,10 @@
                         android:id="@+id/edit_text_age"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/child_age_hint"
-                        android:inputType="number" />
+                        android:hint="@string/date_of_birth"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:inputType="date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

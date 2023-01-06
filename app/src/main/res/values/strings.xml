@@ -17,6 +17,7 @@
     <string name="total_points_today">Points earned today : %s</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+    <string name="date_of_birth">Date of Birth(DD/MM/YYYY)</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>
