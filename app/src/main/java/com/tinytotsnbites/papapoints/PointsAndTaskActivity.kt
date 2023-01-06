@@ -1,18 +1,14 @@
 package com.tinytotsnbites.papapoints
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.data.*
 import com.tinytotsnbites.papapoints.utilities.*
-import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,12 +81,18 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
 
     private fun showTotalPoints() {
         val totalPoints = findViewById<TextView>(R.id.text_view_total_points)
+        val totalPointsToday = findViewById<TextView>(R.id.total_points_today)
         mainScope.launch(Dispatchers.IO) {
             val totalPointsValue =
                 AppDatabase.getInstance(applicationContext).ratingDao().getTotalRating()
+            val totalPointsTodayValue =
+                AppDatabase.getInstance(applicationContext).ratingDao().getTotalRatingToday(
+                    getCalendarInDateFormat())
             withContext(Dispatchers.Main) {
                 totalPoints.text =
                     String.format(getString(R.string.total_points), totalPointsValue.toString())
+                totalPointsToday.text =
+                    String.format(getString(R.string.total_points_today),totalPointsTodayValue.toString())
             }
         }
     }

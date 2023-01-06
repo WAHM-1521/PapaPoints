@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Child Name"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,11 +37,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_points"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toBottomOf="@id/text_view_name" />
+
+        <TextView
+            android:id="@+id/total_points_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_points_today"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/text_view_total_points" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -71,4 +71,8 @@ interface RatingDao {
 
     @Query("SELECT SUM(rating) FROM rating")
     fun getTotalRating(): Int
+
+    @Query("SELECT SUM(rating) FROM rating WHERE date = :today")
+    fun getTotalRatingToday(today: Date): Int
+
 }
