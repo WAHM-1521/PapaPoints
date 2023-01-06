@@ -3,6 +3,7 @@ package com.tinytotsnbites.papapoints
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
 
 const val TEXT_VERTICAL_OFFSET = 10
 
@@ -43,9 +44,9 @@ class CustomRating(context: Context, attrs: AttributeSet) :
 
     private fun setProgressDrawableTint() {
         if (ratingValue < 0) {
-            progressDrawable.setTint(Color.RED)
+            progressDrawable.setTint(ContextCompat.getColor(context, R.color.customRed))
         } else if (ratingValue > 0) {
-            progressDrawable.setTint(Color.parseColor("#FFBB86FC"))
+            progressDrawable.setTint(ContextCompat.getColor(context, R.color.colorPrimary))
         } else {
             progressDrawable.setTint(Color.LTGRAY)
         }
