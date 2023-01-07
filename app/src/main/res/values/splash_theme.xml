@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash Screen Theme. -->
+    <style name="Theme.AppSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/holo_orange_dark</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimationDuration">5000</item>
+        <item name="postSplashScreenTheme">@style/Theme.PapaPoints</item>
+
+        <!-- Status bar and Nav bar configs -->
+        <item name="android:statusBarColor" >#0022CC</item>
+        <item name="android:navigationBarColor">#0022CC</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

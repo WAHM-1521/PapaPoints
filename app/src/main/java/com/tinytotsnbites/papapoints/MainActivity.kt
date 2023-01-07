@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -32,10 +33,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var keepSplashScreen = true
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            keepSplashScreen
+        }
+        // Uncomment the below line to see the splash screen for 5 seconds.
+        // Thread.sleep(5000)
+
         var childDetails : List<Child>
         mainScope.launch(Dispatchers.IO) {
             childDetails = AppDatabase.getInstance(applicationContext).childDao().getAll()
             withContext(Dispatchers.Main) {
+                keepSplashScreen = false
                 if(childDetails.isNotEmpty()) {
                     startPointsTaskActivity()
                 } else {

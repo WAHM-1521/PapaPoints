@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.tinytotsnbites.papapoints"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -44,9 +44,12 @@ dependencies {
 
     def room_version = "2.4.3"
     def work_version = "2.5.0"
+    def splashScreenVersion = "1.0.0"
 
+    implementation "androidx.core:core-splashscreen:$splashScreenVersion"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$room_version"

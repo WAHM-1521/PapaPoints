@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.PapaPoints"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,13 +11,16 @@
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_female"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/pink_900"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -25,10 +29,10 @@
             android:id="@+id/text_view_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="Child Name"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/pink_900"
             android:textSize="30sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,9 +42,8 @@
             android:layout_height="wrap_content"
             android:text="@string/total_points"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintStart_toEndOf="@id/imageView"
+            android:textColor="@color/pink_900"
+            app:layout_constraintStart_toStartOf="@id/text_view_name"
             app:layout_constraintTop_toBottomOf="@id/text_view_name" />
 
         <TextView
@@ -49,54 +52,64 @@
             android:layout_height="wrap_content"
             android:text="@string/total_points_today"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/pink_900"
+            app:layout_constraintStart_toStartOf="@id/text_view_name"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toBottomOf="@id/text_view_total_points" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/prev_day_button"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:background="@color/design_default_color_surface"
-        android:src="@drawable/ic_chevron_left_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/DayText"
-        app:layout_constraintBottom_toBottomOf="@id/DayText"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/DayText"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/middleLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/prev_day_button"
-        app:layout_constraintEnd_toStartOf="@+id/next_day_button"
-        app:layout_constraintTop_toBottomOf="@id/topLayout"
-        tools:text="Today" />
+        android:layout_margin="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
-    <ImageButton
-        android:id="@+id/next_day_button"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:background="@color/design_default_color_surface"
-        android:src="@drawable/ic_chevron_right_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/DayText"
-        app:layout_constraintBottom_toBottomOf="@id/DayText"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <ImageButton
+            android:id="@+id/prev_day_button"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@color/design_default_color_surface"
+            android:src="@drawable/ic_chevron_left_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/DayText"
+            app:layout_constraintTop_toTopOf="@+id/DayText"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/DayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink_900"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/prev_day_button"
+            app:layout_constraintEnd_toStartOf="@+id/next_day_button"
+            tools:text="Today" />
+
+        <ImageButton
+            android:id="@+id/next_day_button"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@color/design_default_color_surface"
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            app:layout_constraintTop_toTopOf="@+id/DayText"
+            app:layout_constraintBottom_toBottomOf="@id/DayText"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/DayText"
+        app:layout_constraintTop_toBottomOf="@id/middleLayout"
         app:layout_constraintBottom_toTopOf="@id/addTaskButton"
         app:layout_constraintVertical_bias="0.619" />
 
@@ -104,8 +117,8 @@
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/ic_input_add"
         android:text="@string/add_task"
+        android:textColor="@color/pink_900"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listView"

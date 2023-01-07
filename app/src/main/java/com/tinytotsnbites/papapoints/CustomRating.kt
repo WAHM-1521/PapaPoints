@@ -46,7 +46,7 @@ class CustomRating(context: Context, attrs: AttributeSet) :
         if (ratingValue < 0) {
             progressDrawable.setTint(ContextCompat.getColor(context, R.color.customRed))
         } else if (ratingValue > 0) {
-            progressDrawable.setTint(ContextCompat.getColor(context, R.color.colorPrimary))
+            progressDrawable.setTint(ContextCompat.getColor(context, R.color.holoOrangeDark))
         } else {
             progressDrawable.setTint(Color.LTGRAY)
         }
