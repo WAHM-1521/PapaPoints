@@ -2,6 +2,7 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
-        var selectedGender = "Female"
+        var selectedGender = ""
         radioGroupGender.setOnCheckedChangeListener { group, checkedId ->
              selectedGender = when (checkedId) {
                 R.id.radio_button_male -> "Male"
@@ -78,20 +79,33 @@ class MainActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             val childName = nameEditText.text.toString()
                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-
-            if (childName.isBlank()) {
-                Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name),
-                    Snackbar.LENGTH_SHORT).show()
-            } else {
-                LogHelper(this).d("Gender is $selectedGender and DOB is $dateOfBirth")
-                val child = Child(1, childName, dateOfBirth, selectedGender)
-                mainScope.launch(Dispatchers.IO) {
-                    AppDatabase.getInstance(applicationContext).childDao().insert(child)
-                    withContext(Dispatchers.Main) {
-                        startPointsTaskActivity()
-                    }
+            when {
+                childName.isBlank() -> {
+                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name),
+                        Snackbar.LENGTH_SHORT).show()
                 }
-                finish()
+                TextUtils.isEmpty(dobEditText.text)-> {
+                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_dob),
+                        Snackbar.LENGTH_SHORT).show()
+                    LogHelper(this).d("DOB is $dateOfBirth")
+                }
+                selectedGender == "" -> {
+                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_gender),
+                        Snackbar.LENGTH_SHORT).show()
+                    LogHelper(this).d("Gender is $selectedGender")
+
+                }
+                else -> {
+                    LogHelper(this).d("Gender is $selectedGender and DOB is $dateOfBirth")
+                    val child = Child(1, childName, dateOfBirth, selectedGender)
+                    mainScope.launch(Dispatchers.IO) {
+                        AppDatabase.getInstance(applicationContext).childDao().insert(child)
+                        withContext(Dispatchers.Main) {
+                            startPointsTaskActivity()
+                        }
+                    }
+                    finish()
+                }
             }
         }
     }
