@@ -10,8 +10,9 @@
     <color name="colorPrimary">#0022CC</color>
     <color name="colorAccent">#673AB7</color>
     <color name="colorPrimaryDark">#46277E</color>
-    <color name="customRed">#FF0000</color>
+    <color name="customPink">#F06292</color>
     <color name="holoOrangeDark">#FEDBD0</color>
+    <color name ="bluePrimary"></color>
 
 
     <color name="pink_900">#442C2E</color>
