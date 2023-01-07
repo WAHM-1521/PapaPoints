@@ -7,13 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#0022CC</color>
+    <color name="colorPrimary">#FEDBD0</color>
     <color name="colorAccent">#673AB7</color>
     <color name="colorPrimaryDark">#46277E</color>
     <color name="customPink">#F06292</color>
+    <color name="customRed">#FF0266</color>
     <color name="holoOrangeDark">#FEDBD0</color>
-    <color name ="bluePrimary"></color>
-
 
     <color name="pink_900">#442C2E</color>
     <color name="pink_variant">#E6BBAC</color>
