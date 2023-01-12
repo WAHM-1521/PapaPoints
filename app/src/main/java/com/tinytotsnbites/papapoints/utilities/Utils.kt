@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints.utilities
 
+import android.app.Activity
 import java.util.*
 
 fun getCalendarInDateFormat(): Date {
@@ -19,4 +20,8 @@ fun getCalendarDateForMidnightTime(calendar: Calendar): Date {
     calendar.set(Calendar.MILLISECOND, 0)
     val currentDate = calendar.time
     return currentDate
+}
+
+fun onActivitySetTheme(activity: Activity, theme: Int) {
+    activity.setTheme(theme)
 }

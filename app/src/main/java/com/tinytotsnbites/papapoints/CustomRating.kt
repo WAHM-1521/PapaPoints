@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
+import com.google.android.material.color.MaterialColors
 
 const val TEXT_VERTICAL_OFFSET = 10
 
@@ -44,9 +45,9 @@ class CustomRating(context: Context, attrs: AttributeSet) :
 
     private fun setProgressDrawableTint() {
         if (ratingValue < 0) {
-            progressDrawable.setTint(ContextCompat.getColor(context, R.color.customPink))
+            progressDrawable.setTint(MaterialColors.getColor(this, R.attr.ratingMinus))
         } else if (ratingValue > 0) {
-            progressDrawable.setTint(ContextCompat.getColor(context, R.color.holoOrangeDark))
+            progressDrawable.setTint( MaterialColors.getColor(this,R.attr.ratingPlus))
         } else {
             progressDrawable.setTint(Color.LTGRAY)
         }

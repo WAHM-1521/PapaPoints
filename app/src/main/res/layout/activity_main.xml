@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.PapaPoints.Girl"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -11,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorPrimaryDark"
-        android:background="@color/colorPrimary"
+        style="?toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -29,8 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome_message"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="@color/colorPrimaryDark"
+                    style="?textLarge"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -40,8 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/child_details"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:textColor="@color/colorPrimaryDark"
+                    style="?textSmall"
                     android:layout_marginTop="25dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/gender"
-            android:textColor="@color/colorPrimaryDark"
+            style="?textSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_group_gender"
             app:layout_constraintTop_toTopOf="parent" />
@@ -137,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
-            android:textColor="@color/pink_900"
+            style="?button"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

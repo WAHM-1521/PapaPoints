@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.PapaPoints"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,9 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?toolbar"
         app:title="@string/app_name"
-        app:titleTextColor="@color/colorPrimaryDark"
-        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -42,8 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Child Name"
-            android:textColor="@color/pink_900"
-            android:textSize="30sp"
+            style="?textLarge"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,8 +50,7 @@
             android:layout_height="wrap_content"
             android:text="@string/total_points"
             android:layout_marginTop="5dp"
-            android:textSize="15sp"
-            android:textColor="@color/pink_900"
+            style="?textSmall"
             app:layout_constraintStart_toStartOf="@id/text_view_name"
             app:layout_constraintTop_toBottomOf="@id/text_view_name" />
 
@@ -63,8 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_points_today"
-            android:textSize="15sp"
-            android:textColor="@color/pink_900"
+            style="?textSmall"
             app:layout_constraintStart_toStartOf="@id/text_view_name"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toBottomOf="@id/text_view_total_points" />
@@ -92,8 +87,7 @@
             android:id="@+id/DayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/pink_900"
-            android:textSize="20sp"
+            style="?textRegular"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/prev_day_button"
             app:layout_constraintEnd_toStartOf="@+id/next_day_button"
@@ -130,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_task"
-        android:textColor="@color/pink_900"
+        style="?button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listView"

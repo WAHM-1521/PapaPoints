@@ -1,9 +1,9 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="Theme.PapaPoints" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/pink_variant</item>
+        <item name="colorPrimaryVariant">@color/pink_medium_variant</item>
         <item name="colorOnPrimary">@color/pink_900</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -13,6 +13,42 @@
         <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your font here. -->
         <item name="android:fontFamily">@font/rubik</item>
+    </style>
+    
+    <style name="Theme.PapaPoints.Girl" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/pink_100</item>
+        <item name="colorPrimaryVariant">@color/pink_medium_variant</item>
+        <item name="colorOnPrimary">@color/pink_900</item>
+        
+        <item name="textLarge">@style/text_large_girl</item>
+        <item name="textRegular">@style/text_regular_girl</item>
+        <item name="textSmall">@style/text_small_girl</item>
+
+        <item name="button">@style/button_style_girl</item>
+        <item name="toolbar">@style/toolbar_style_girl</item>
+        <item name="android:statusBarColor">@color/pink_medium_variant</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="ratingPlus">@color/pink_100</item>
+        <item name="ratingMinus">@color/customPink</item>
+
+    </style>
+
+    <style name="Theme.PapaPoints.Boy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_500</item>
+        <item name="colorOnPrimary">@color/purple_700</item>
+
+        <item name="textLarge">@style/text_large_boy</item>
+        <item name="textRegular">@style/text_regular_boy</item>
+        <item name="textSmall">@style/text_small_boy</item>
+
+        <item name="button">@style/button_style_boy</item>
+        <item name="toolbar">@style/toolbar_style_boy</item>
+        <item name="android:statusBarColor">@color/purple_500</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="ratingPlus">@color/purple_200</item>
+        <item name="ratingMinus">@color/customRed</item>
+
     </style>
 
 </resources>

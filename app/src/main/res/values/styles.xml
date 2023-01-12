@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.PapaPoints">
+        <!-- Customize your theme here. -->
+    </style>
+    <!-- Start : Toolbar styling theme. -->
+    <style name="toolbar_style_girl" parent="Theme.PapaPoints.Girl">
+        <item name="android:background">@color/pink_100</item>
+        <item name="android:textColor">@color/pink_900</item>
+    </style>
+
+    <style name="toolbar_style_boy" parent="Theme.PapaPoints.Boy">
+        <item name="android:background">@color/purple_200</item>
+        <item name="android:textColor">@color/purple_700</item>
+    </style>
+    <!-- End : Toolbar styling theme. -->
+
+    <!-- Start : Button styling theme. -->
+    <style name="button_style_girl">
+        <item name="android:textColor">@color/pink_900</item>
+    </style>
+
+    <style name="button_style_boy">
+        <item name="android:textColor">@color/purple_700</item>
+    </style>
+    <!-- End : Button styling theme. -->
+
+    <!-- Start : Text styling theme. -->
+    <style name="text_color_girl">
+        <item name="android:textColor">@color/pink_900</item>
+    </style>
+
+    <style name="text_large_girl" parent="text_color_girl">
+        <item name="android:textSize">@dimen/text_large_text_size</item>
+    </style>
+
+    <style name="text_regular_girl" parent="text_color_girl">
+        <item name="android:textSize">@dimen/text_regular_text_size</item>
+    </style>
+
+    <style name="text_small_girl" parent="text_color_girl">
+        <item name="android:textSize">@dimen/text_small_text_size</item>
+    </style>
+
+    <style name="text_color_boy">
+        <item name="android:textColor">@color/purple_700</item>
+    </style>
+
+    <style name="text_large_boy" parent="text_color_boy">
+        <item name="android:textSize">@dimen/text_large_text_size</item>
+    </style>
+
+    <style name="text_regular_boy" parent="text_color_boy">
+        <item name="android:textSize">@dimen/text_regular_text_size</item>
+    </style>
+
+    <style name="text_small_boy" parent="text_color_boy">
+        <item name="android:textSize">@dimen/text_small_text_size</item>
+    </style>
+    <!-- End : Text styling theme. -->
+
+
+</resources>

@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -81,17 +82,14 @@ class MainActivity : AppCompatActivity() {
                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             when {
                 childName.isBlank() -> {
-                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_name),
-                        Snackbar.LENGTH_SHORT).show()
+                    showSnackbar(getString(R.string.snack_enter_name))
                 }
                 TextUtils.isEmpty(dobEditText.text)-> {
-                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_dob),
-                        Snackbar.LENGTH_SHORT).show()
+                    showSnackbar(getString(R.string.snack_enter_dob))
                     LogHelper(this).d("DOB is $dateOfBirth")
                 }
                 selectedGender == "" -> {
-                    Snackbar.make(findViewById(R.id.rootView), getString(R.string.snack_enter_gender),
-                        Snackbar.LENGTH_SHORT).show()
+                    showSnackbar(getString(R.string.snack_enter_gender))
                     LogHelper(this).d("Gender is $selectedGender")
 
                 }
@@ -100,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                     val child = Child(1, childName, dateOfBirth, selectedGender)
                     mainScope.launch(Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).childDao().insert(child)
+                        getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putString("gender",selectedGender).apply()
                         withContext(Dispatchers.Main) {
                             startPointsTaskActivity()
                         }
@@ -108,6 +107,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showSnackbar(text: String) {
+        Snackbar.make(
+            findViewById(R.id.rootView), text,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun showDatePicker() {

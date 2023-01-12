@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,11 +22,16 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var adapter: ListAdapter
-    var calendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(getSharedPreferences("prefs",Context.MODE_PRIVATE).getString("gender","") == "Male") {
+            onActivitySetTheme(this, R.style.Theme_PapaPoints_Boy)
+        } else {
+            onActivitySetTheme(this, R.style.Theme_PapaPoints_Girl)
+        }
         setContentView(R.layout.points_and_task)
 
         populateChildDetails()

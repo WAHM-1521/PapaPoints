@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_padding">16dp</dimen>
+    <dimen name="content_left_margin_wh">8sp</dimen>
+    <dimen name="text_large_margin_top">40dp</dimen>
+
+    <dimen name="text_large_text_size">25sp</dimen>
+    <dimen name="text_regular_text_size">20sp</dimen>
+    <dimen name="text_small_text_size">16sp</dimen>
+
+    <dimen name="view_margin">20dp</dimen>
+    <dimen name="white_background_padding">20dp</dimen>
+    <dimen name="edittext_margin_top">10dp</dimen>
+
+</resources>

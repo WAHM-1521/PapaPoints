@@ -3,4 +3,14 @@
     <declare-styleable name="CustomRating">
         <attr name="ratingValue" format="integer" />
     </declare-styleable>
+
+    <attr name="textLarge" format="reference" />
+    <attr name="textRegular" format="reference" />
+    <attr name="textSmall" format="reference" />
+    <attr name="button" format="reference" />
+    <attr name="toolbar" format="reference" />
+    <attr name="ratingPlus" format="reference" />
+    <attr name="ratingMinus" format="reference" />
+
+
 </resources>
