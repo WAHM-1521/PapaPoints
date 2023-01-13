@@ -90,14 +90,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toStartOf="@+id/rootView"
         app:layout_constraintTop_toBottomOf="@+id/rootView">
 
         <TextView
             android:id="@+id/genderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text="@string/gender"
+            android:paddingRight="15dp"
             style="?textSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_group_gender"
@@ -108,6 +111,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingLeft="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/genderTextView"
@@ -119,7 +124,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimaryDark"
                         android:buttonTint="@color/colorPrimaryDark"
-                        android:text="@string/female" />
+                        android:text="@string/female"
+                        android:paddingRight="30dp"/>
 
                     <RadioButton
                         android:id="@+id/radio_button_male"
