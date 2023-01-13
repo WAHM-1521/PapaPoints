@@ -59,7 +59,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/child_name_hint"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:textCursorDrawable = "@null"
+                        android:cursorVisible="true"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

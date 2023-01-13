@@ -11,8 +11,8 @@
     </style>
 
     <style name="toolbar_style_boy" parent="Theme.PapaPoints.Boy">
-        <item name="android:background">@color/purple_200</item>
-        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:background">@color/blue_100</item>
+        <item name="android:textColor">@color/blue_900</item>
     </style>
     <!-- End : Toolbar styling theme. -->
 
@@ -22,7 +22,7 @@
     </style>
 
     <style name="button_style_boy">
-        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textColor">@color/blue_900</item>
     </style>
     <!-- End : Button styling theme. -->
 
@@ -44,7 +44,7 @@
     </style>
 
     <style name="text_color_boy">
-        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textColor">@color/blue_900</item>
     </style>
 
     <style name="text_large_boy" parent="text_color_boy">

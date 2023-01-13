@@ -34,9 +34,9 @@
     </style>
 
     <style name="Theme.PapaPoints.Boy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_500</item>
-        <item name="colorOnPrimary">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue_100</item>
+        <item name="colorPrimaryVariant">@color/blue_500</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
 
         <item name="textLarge">@style/text_large_boy</item>
         <item name="textRegular">@style/text_regular_boy</item>
@@ -44,10 +44,10 @@
 
         <item name="button">@style/button_style_boy</item>
         <item name="toolbar">@style/toolbar_style_boy</item>
-        <item name="android:statusBarColor">@color/purple_500</item>
+        <item name="android:statusBarColor">@color/blue_500</item>
         <item name="android:fontFamily">@font/rubik</item>
-        <item name="ratingPlus">@color/purple_200</item>
-        <item name="ratingMinus">@color/customRed</item>
+        <item name="ratingPlus">@color/blue_100</item>
+        <item name="ratingMinus">@color/customIndigo</item>
 
     </style>
 
