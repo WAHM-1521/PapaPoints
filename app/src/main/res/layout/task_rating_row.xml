@@ -38,6 +38,8 @@
         android:layout_height="wrap_content"
         android:numStars="1"
         android:progressTint="@color/pink_900"
+        android:isIndicator="true"
+        android:clickable="false"
         app:ratingValue="0"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
