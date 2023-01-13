@@ -22,7 +22,7 @@ class PapaPointsDatabaseWorker(
         try {
             val database  = AppDatabase.getInstance(applicationContext)
             val taskList: List<Task> = applicationContext.resources.getStringArray(R.array.tasks).mapIndexed {
-                    index, task -> Task(taskName = task)
+                    index, task -> Task(0, task, true)
             }
             database.taskDao().insertAll(taskList)
             Result.success()

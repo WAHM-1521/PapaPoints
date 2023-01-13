@@ -22,6 +22,10 @@
     <string name="date_of_birth">Date of Birth(DD/MM/YYYY)</string>
     <string name="select_valid_date">Please select a valid Date of Birth</string>
     <string name="select_date_of_birth">Select date of birth</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="delete_task_confirm_msg">Are you sure you want to delete this task?</string>
+    <string name="yes">Yes</string>
+    <string name="delete_task_error">This task cannot be deleted because points have already been assigned to it.</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>

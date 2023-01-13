@@ -17,7 +17,8 @@ data class Child(
 @Entity
 data class Task(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name  = "id") val taskId: Long = 0,
-    @ColumnInfo(name = "task_name") val taskName: String
+    @ColumnInfo(name = "task_name") val taskName: String,
+    @ColumnInfo(name = "enabled") val enabled: Boolean
 )
 
 @Entity

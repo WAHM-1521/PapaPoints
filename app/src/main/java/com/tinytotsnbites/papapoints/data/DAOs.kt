@@ -42,8 +42,11 @@ interface TaskDao {
     fun getById(id: Long): Task
 
     //@Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id WHERE rating.date = :date OR rating.date IS NULL")
-    @Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id AND rating.date = :date WHERE rating.date IS NULL OR rating.date = :date")
+    @Query("SELECT task.*, rating.rating FROM task LEFT JOIN rating ON task.id = rating.task_id AND rating.date = :date WHERE (rating.date IS NULL OR rating.date = :date) AND task.enabled = 1")
     fun getTasksWithRatingForDate(date: Date): List<TaskWithRating>
+
+    @Query("UPDATE task SET enabled = 0 WHERE id = :taskId")
+    fun disableTask(taskId: Long)
 }
 
 @Dao

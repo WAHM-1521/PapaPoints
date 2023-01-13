@@ -137,7 +137,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             addButton.setOnClickListener {
                 // Add the task to the database here
                 if(taskEditText.text.isNotEmpty()) {
-                    val task = Task(taskName = taskEditText.text.toString())
+                    val task = Task(0, taskEditText.text.toString(),true)
                     mainScope.launch (Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).taskDao().insert(task)
                         refreshTasks()
@@ -160,6 +160,16 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         adapter.setOnUpdateListListener(this)
 
         showTotalPoints()
+    }
+
+    override fun onDeleteTask(taskID: Long) {
+        mainScope.launch(Dispatchers.IO) {
+            AppDatabase.getInstance(applicationContext).taskDao().disableTask(taskID)
+            withContext(Dispatchers.Main) {
+                refreshTasks()
+                Snackbar.make(findViewById(R.id.topLayout), "Task Deleted", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onPointsGiven(taskID: Long, newRating: Int) {

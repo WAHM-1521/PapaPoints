@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 
 // Custom adapter to bind data to the list view
@@ -19,6 +21,7 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
     //Interface to listen for any change of points.
     interface UpdatePointsList {
         fun onPointsGiven(taskID: Long, newRating: Int)
+        fun onDeleteTask(taskID: Long)
     }
 
     private var listener: UpdatePointsList? = null
@@ -93,6 +96,23 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
             if(fromUser) {
                 listener?.onPointsGiven(item.taskID, item.rating+1)
             }
+        }
+
+        view.setOnLongClickListener {
+                parent ->
+            val builder = AlertDialog.Builder(view.context)
+            builder.setTitle(R.string.delete_task)
+            builder.setMessage(R.string.delete_task_confirm_msg)
+            builder.setPositiveButton(R.string.yes) { dialog, which ->
+                if(item.rating != 0) {
+                    Snackbar.make(parent, R.string.delete_task_error, Snackbar.LENGTH_LONG).show()
+                } else {
+                    listener?.onDeleteTask(item.taskID)
+                }
+            }
+            builder.setNegativeButton("No") { _, _ -> }
+            builder.show()
+            true
         }
         return view
     }
