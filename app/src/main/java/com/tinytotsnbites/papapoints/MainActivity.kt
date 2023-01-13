@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             .setSelection(getCalendarInDateFormat().time)
             .setCalendarConstraints(endCalendarConstraints)
             .setTitleText(getString(R.string.select_date_of_birth))
+            .setTheme(R.style.MaterialCalendarTheme)
             .build()
 
         datePickerDialog.show(supportFragmentManager, "DATE_PICKER")
