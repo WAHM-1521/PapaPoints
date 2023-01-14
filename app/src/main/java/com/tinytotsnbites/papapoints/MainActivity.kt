@@ -17,6 +17,7 @@ import com.tinytotsnbites.papapoints.data.AppDatabase
 import com.tinytotsnbites.papapoints.data.Child
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 import com.tinytotsnbites.papapoints.utilities.getCalendarInDateFormat
+import com.tinytotsnbites.papapoints.utilities.scheduleNotification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -100,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                         AppDatabase.getInstance(applicationContext).childDao().insert(child)
                         getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putString("gender",selectedGender).apply()
                         withContext(Dispatchers.Main) {
+                            scheduleNotification(applicationContext)
                             startPointsTaskActivity()
                         }
                     }

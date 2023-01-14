@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PapaPoints.Girl">
-        <activity android:name="com.tinytotsnbites.papapoints.MainActivity"
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppSplash">
             <intent-filter>
@@ -18,8 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.tinytotsnbites.papapoints.PointsAndTaskActivity"/>
+        <activity android:name=".PointsAndTaskActivity" />
     </application>
 
 </manifest>

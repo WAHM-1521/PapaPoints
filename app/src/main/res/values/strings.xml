@@ -26,6 +26,9 @@
     <string name="delete_task_confirm_msg">Are you sure you want to delete this task?</string>
     <string name="yes">Yes</string>
     <string name="delete_task_error">This task cannot be deleted because points have already been assigned to it.</string>
+    <string name="notification_title">Time to reward your kids!</string>
+    <string name="notification_text">Click to acknowledge their daily activities</string>
+    <string name="notification_channel_name">Papa Points Channel</string>
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>
