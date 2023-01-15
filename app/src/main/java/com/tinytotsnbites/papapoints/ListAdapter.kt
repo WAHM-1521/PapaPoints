@@ -18,7 +18,7 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
     private val inflater: LayoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var data: MutableList<Item> = data.toMutableList()
 
-    //Interface to listen for any change of points.
+    //Interface to communicate back to activity.
     interface UpdatePointsList {
         fun onPointsGiven(taskID: Long, newRating: Int)
         fun onDeleteTask(taskID: Long)

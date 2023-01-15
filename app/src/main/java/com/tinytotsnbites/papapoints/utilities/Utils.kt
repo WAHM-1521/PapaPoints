@@ -14,8 +14,7 @@ fun getCalendarInDateFormat(): Date {
     calendar.set(Calendar.MINUTE, 0)
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
-    val currentDate = calendar.time
-    return currentDate
+    return calendar.time
 }
 
 fun getCalendarDateForMidnightTime(calendar: Calendar): Date {
@@ -23,8 +22,7 @@ fun getCalendarDateForMidnightTime(calendar: Calendar): Date {
     calendar.set(Calendar.MINUTE, 0)
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
-    val currentDate = calendar.time
-    return currentDate
+    return calendar.time
 }
 
 fun onActivitySetTheme(activity: Activity, theme: Int) {
@@ -47,4 +45,5 @@ fun scheduleNotification(context: Context) {
         AlarmManager.INTERVAL_DAY,
         pendingIntent
     )
+    LogHelper(context).d("scheduleNotification for ${calendar.time}")
 }
