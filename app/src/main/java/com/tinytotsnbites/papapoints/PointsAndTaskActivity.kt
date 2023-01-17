@@ -5,6 +5,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,10 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     private lateinit var adapter: ListAdapter
     private var calendar = Calendar.getInstance()
 
+    enum class SwipeDirection {
+        LEFT, RIGHT, NONE
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +43,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         setContentView(R.layout.points_and_task)
 
         populateChildDetails()
-        refreshTasks()
+        refreshTasks(SwipeDirection.NONE)
         manageCalendarButtons()
         manageAddingNewTask()
         val settingButton = findViewById<ImageButton>(R.id.settings_button)
@@ -58,16 +64,20 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
 
         prevButton.setOnClickListener {
             calendar.add(Calendar.DATE, -1)  // Reduce the date by one day
+            val animationLeft = AnimationUtils.loadAnimation(this,R.anim.slide_in_from_left)
+            textView.startAnimation(animationLeft)
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
-            refreshTasks()
+            refreshTasks(SwipeDirection.LEFT)
             if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound_preference", true))
                 mediaPlayer.start()
         }
 
         nextButton.setOnClickListener {
             calendar.add(Calendar.DATE, +1)  // Reduce the date by one day
+            val animationRight = AnimationUtils.loadAnimation(this,R.anim.slide_in_from_right)
+            textView.startAnimation(animationRight)
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
-            refreshTasks()
+            refreshTasks(SwipeDirection.RIGHT)
             if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound_preference", true))
                 mediaPlayer.start()
         }
@@ -136,7 +146,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             return(AppDatabase.getInstance(applicationContext).childDao().getById(1))
     }
 
-    private fun refreshTasks() {
+    private fun refreshTasks(swipe: SwipeDirection) {
         mainScope.launch(Dispatchers.IO) {
             //val lists = AppDatabase.getInstance(applicationContext).taskDao().getAll()
             val tasksWithRating = AppDatabase.getInstance(applicationContext).taskDao().getTasksWithRatingForDate(
@@ -147,7 +157,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
                         "Task id ${tasksWithRating[0].task.taskId}  " +
                         "is ${tasksWithRating[0].task.taskName} " +
                         "and has rating ${tasksWithRating[0].rating}")
-                updateUI(tasksWithRating)
+                updateUI(tasksWithRating, swipe)
             }
         }
     }
@@ -172,7 +182,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
                     val task = Task(0, taskName,true, true)
                     mainScope.launch (Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).taskDao().insert(task)
-                        refreshTasks()
+                        refreshTasks(SwipeDirection.NONE)
                         withContext(Dispatchers.Main) {
                             Snackbar.make(findViewById(R.id.topLayout), "Task Added", Snackbar.LENGTH_SHORT).show()
                         }
@@ -184,11 +194,17 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         }
     }
 
-    private fun updateUI(lists: List<TaskWithRating>) {
+    private fun updateUI(lists: List<TaskWithRating>, swipe: SwipeDirection) {
+        val animation : Animation? = when(swipe) {
+            SwipeDirection.LEFT -> AnimationUtils.loadAnimation(this,R.anim.slide_in_from_left)
+            SwipeDirection.RIGHT -> AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right)
+            else -> null
+        }
         val listView = findViewById<ListView>(R.id.listView)
         val data = lists.map { Item(it.task.taskName, it.task.taskId, it.rating) }
         adapter = ListAdapter(this, data)
         listView.adapter = adapter
+        animation?.let { listView.startAnimation(animation) }
         adapter.setOnUpdateListListener(this)
 
         showTotalPoints()
@@ -198,7 +214,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         mainScope.launch(Dispatchers.IO) {
             AppDatabase.getInstance(applicationContext).taskDao().disableTask(taskID)
             withContext(Dispatchers.Main) {
-                refreshTasks()
+                refreshTasks(SwipeDirection.NONE)
                 Snackbar.make(findViewById(R.id.topLayout), "Task Deleted", Snackbar.LENGTH_SHORT).show()
             }
         }
