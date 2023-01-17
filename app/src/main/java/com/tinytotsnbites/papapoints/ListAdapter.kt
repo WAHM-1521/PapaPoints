@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 
@@ -78,7 +79,8 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
             LogHelper(this).d("New rating after adding is $newRating")
             listener?.onPointsGiven(item.taskID, newRating)
             holder.ratingBar.rating = newRating.toFloat()
-            plusButtonSound.start()
+            if(PreferenceManager.getDefaultSharedPreferences(view.context).getBoolean("sound_preference", true))
+                plusButtonSound.start()
 
         }
 
@@ -88,8 +90,8 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
             LogHelper(this).d("New rating after subtracting is $newRating")
             listener?.onPointsGiven(item.taskID, newRating)
             holder.ratingBar.rating = newRating.toFloat()
-            minusButtonSound.start()
-
+            if(PreferenceManager.getDefaultSharedPreferences(view.context).getBoolean("sound_preference", true))
+                minusButtonSound.start()
         }
 
         holder.ratingBar.setOnRatingBarChangeListener { _, _, fromUser ->

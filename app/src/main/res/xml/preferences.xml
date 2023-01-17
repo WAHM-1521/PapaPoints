@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="child_category"
+        app:title="Child Profile">
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="edit_child_name_preference"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Edit Child Name" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="notifications_category"
+        app:title="Notifications">
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="notification_preference"
+            app:summary="Notify everyday at 9:00pm"
+            app:title="Reminder" />
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="sound_preference"
+            app:summary="Turn App Sounds On/Off"
+            app:title="Sound" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="support_category"
+        app:title="Support">
+
+        <Preference
+            app:key="feedback_preference"
+            app:summary="Report technical issues or suggest new features"
+            app:title="Send feedback" />
+
+        <Preference
+            app:key="rate_us_preference"
+            app:title="Rate Us" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="other_category"
+        app:title="Others">
+
+    <Preference
+        app:key="about_us_preference"
+        app:title="About Us"/>
+
+    <Preference
+        app:key="logout_preference"
+        app:title="Logout"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

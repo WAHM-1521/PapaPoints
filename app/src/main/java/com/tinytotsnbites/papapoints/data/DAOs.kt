@@ -14,6 +14,9 @@ interface ChildDao {
     @Delete
     fun delete(child: Child)
 
+    @Query("DELETE FROM child")
+    fun deleteAll()
+
     @Query("SELECT * FROM child")
     fun getAll(): List<Child>
 
@@ -34,6 +37,9 @@ interface TaskDao {
 
     @Delete
     fun delete(task: Task)
+
+    @Query("DELETE FROM task WHERE user_defined = 1")
+    fun deleteUserDefinedTasks()
 
     @Query("SELECT * FROM task")
     fun getAll(): List<Task>
@@ -59,6 +65,9 @@ interface RatingDao {
 
     @Delete
     fun delete(rating: Rating)
+
+    @Query("DELETE FROM rating")
+    fun deleteAll()
 
     @Query("SELECT * FROM rating")
     fun getAll(): List<Rating>

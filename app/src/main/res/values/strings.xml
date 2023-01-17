@@ -29,6 +29,16 @@
     <string name="notification_title">Time to reward your kids!</string>
     <string name="notification_text">Click to acknowledge their daily activities</string>
     <string name="notification_channel_name">Papa Points Channel</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="logout_preference_message">Are you sure you want to Logout? This action will erase all your data.</string>
+    <string name="logout_title">Logout</string>
+    <string name="about_us_title">About Us</string>
+    <string name="about_us_dialog_button">OK</string>
+    <string name="email_subject">Feedback/Suggestions for PapaPoint App</string>
+    <string name="email_snack_message">Mail app not found</string>
+    <string name="child_pref_empty_snack_message">Child Name cannot be empty</string>
+    <string name="child_pref_update_snack_message">Child Name Updated</string>
+
 
     <string-array name="tasks">
         <item>Brush your Teeth</item>

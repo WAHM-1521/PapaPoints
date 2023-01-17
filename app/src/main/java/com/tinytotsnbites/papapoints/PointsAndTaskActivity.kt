@@ -1,12 +1,14 @@
 package com.tinytotsnbites.papapoints
 
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.data.*
 import com.tinytotsnbites.papapoints.utilities.*
@@ -14,8 +16,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import java.text.SimpleDateFormat
+import java.util.*
 
 class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList {
 
@@ -36,26 +38,53 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
 
         populateChildDetails()
         refreshTasks()
+        manageCalendarButtons()
         manageAddingNewTask()
+        val settingButton = findViewById<ImageButton>(R.id.settings_button)
 
+        settingButton.setOnClickListener() {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun manageCalendarButtons()
+    {
+        val textView = findViewById<TextView>(R.id.DayText)  // Get a reference to the TextView in the ViewPager
         val dateFormat = SimpleDateFormat("dd MMM yy")
         val prevButton = findViewById<ImageButton>(R.id.prev_day_button)
         val nextButton = findViewById<ImageButton>(R.id.next_day_button)
-        val textView = findViewById<TextView>(R.id.DayText)  // Get a reference to the TextView in the ViewPager
         val mediaPlayer = MediaPlayer.create(this, R.raw.button_click_calendar)
 
         prevButton.setOnClickListener {
             calendar.add(Calendar.DATE, -1)  // Reduce the date by one day
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
             refreshTasks()
-            mediaPlayer.start()
+            if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound_preference", true))
+                mediaPlayer.start()
         }
 
         nextButton.setOnClickListener {
             calendar.add(Calendar.DATE, +1)  // Reduce the date by one day
             textView.text = dateFormat.format(getCalendarDateForMidnightTime(calendar))
             refreshTasks()
-            mediaPlayer.start()
+            if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound_preference", true))
+                mediaPlayer.start()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                .getBoolean("child_name_updated",true)
+        ) {
+            populateChildDetails()
+            //Update the child_detail_updated_boolean on sharedPref false
+            getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean("child_name_updated", false)
+                .apply()
+            LogHelper(this).d("on Resume child name updates: Points & Task ")
         }
     }
 
@@ -137,7 +166,10 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             addButton.setOnClickListener {
                 // Add the task to the database here
                 if(taskEditText.text.isNotEmpty()) {
-                    val task = Task(0, taskEditText.text.toString(),true)
+                    val taskName = taskEditText.text.trimStart().substring(0, 1)
+                        .uppercase(Locale.ROOT) + taskEditText.text.trimStart()
+                        .substring(1)
+                    val task = Task(0, taskName,true, true)
                     mainScope.launch (Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).taskDao().insert(task)
                         refreshTasks()

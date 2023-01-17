@@ -3,7 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.PapaPoints">
         <!-- Customize your theme here. -->
+        <item name="android:windowDisablePreview">true</item>
     </style>
+
     <!-- Start : Toolbar styling theme. -->
     <style name="toolbar_style_girl" parent="Theme.PapaPoints.Girl">
         <item name="android:background">@color/pink_100</item>
@@ -67,6 +69,11 @@
     </style>
     <style name="TextButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="PreferenceCategoryStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

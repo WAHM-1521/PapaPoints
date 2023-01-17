@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="ic_launcher_background">#fbdbd3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
@@ -19,5 +19,4 @@
     <color name="blue_100">#BBDEFB</color>
     <color name="blue_500">#2196F3</color>
     <color name="blue_900">#0D47A1</color>
-
 </resources>
