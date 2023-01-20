@@ -52,7 +52,6 @@ class SettingsActivity : AppCompatActivity() {
             setPreferencesFromResource(R.xml.preferences, rootKey)
             val mainScope = CoroutineScope(Dispatchers.Main)
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
-            val sharedPref = context?.getSharedPreferences("prefs",Context.MODE_PRIVATE)
 
             //Editing Child Name
             val editChildName = findPreference<EditTextPreference>("edit_child_name_preference")
@@ -191,6 +190,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             //Logout
+            //TODO clear any active notifications reminder
             val logoutPreference = findPreference<Preference>("logout_preference")
             logoutPreference?.setOnPreferenceClickListener {
                 val builder = view?.let { it1 -> AlertDialog.Builder(it1.context) }
@@ -218,6 +218,7 @@ class SettingsActivity : AppCompatActivity() {
                         database.childDao().deleteAll()
                         database.ratingDao().deleteAll()
                         database.taskDao().deleteUserDefinedTasks()
+                        database.taskDao().enableAll()
                     }
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or

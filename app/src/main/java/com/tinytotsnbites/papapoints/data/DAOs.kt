@@ -53,6 +53,10 @@ interface TaskDao {
 
     @Query("UPDATE task SET enabled = 0 WHERE id = :taskId")
     fun disableTask(taskId: Long)
+
+    //enable the Task which were earlier disabled during Delete Task
+    @Query("UPDATE task SET enabled = 1 WHERE enabled = 0")
+    fun enableAll()
 }
 
 @Dao
