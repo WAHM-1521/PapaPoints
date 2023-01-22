@@ -38,6 +38,11 @@
     <string name="email_snack_message">Mail app not found</string>
     <string name="child_pref_empty_snack_message">Child Name cannot be empty</string>
     <string name="child_pref_update_snack_message">Child Name Updated</string>
+    <string name="settings">Settings</string>
+
+    <!-- Content  descriptions -->
+    <string name="content_desc_prev_day">Go to the previous day</string>
+    <string name="content_desc_next_day">Go to the next day</string>
 
 
     <string-array name="tasks">
@@ -47,7 +52,7 @@
         <item>Being Helpful</item>
         <item>Eat Vegetables</item>
         <item>No Crying</item>
-        <item>Finish Tiffins</item>
+        <item>Finish Tiffin</item>
         <item>Read a Book</item>
         <item>Helped Mommy</item>
         <item>Less watching TV</item>

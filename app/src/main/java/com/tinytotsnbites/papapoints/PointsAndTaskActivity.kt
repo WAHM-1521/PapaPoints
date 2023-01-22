@@ -5,6 +5,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
@@ -42,15 +44,26 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         }
         setContentView(R.layout.points_and_task)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
         populateChildDetails()
         refreshTasks(SwipeDirection.NONE)
         manageCalendarButtons()
         manageAddingNewTask()
-        val settingButton = findViewById<ImageButton>(R.id.settings_button)
+    }
 
-        settingButton.setOnClickListener() {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_file, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

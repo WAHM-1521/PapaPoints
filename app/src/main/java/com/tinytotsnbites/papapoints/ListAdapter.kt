@@ -81,7 +81,6 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
             holder.ratingBar.rating = newRating.toFloat()
             if(PreferenceManager.getDefaultSharedPreferences(view.context).getBoolean("sound_preference", true))
                 plusButtonSound.start()
-
         }
 
         holder.removePointsButton.setOnClickListener {

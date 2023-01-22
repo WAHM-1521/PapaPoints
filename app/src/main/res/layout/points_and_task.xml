@@ -16,17 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.constraintlayout.utils.widget.ImageFilterButton
-        android:id="@+id/settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_gravity = "center_horizontal"
-        android:src="@drawable/ic_settings"
-        app:layout_constraintEnd_toEndOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
@@ -53,7 +42,8 @@
             android:text="Child Name"
             style="?textLarge"
             app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/text_view_total_points"
@@ -90,6 +80,7 @@
             android:layout_height="52dp"
             android:background="@color/design_default_color_surface"
             android:src="@drawable/ic_chevron_left_black_24dp"
+            android:contentDescription="@string/content_desc_prev_day"
             app:layout_constraintBottom_toBottomOf="@id/DayText"
             app:layout_constraintTop_toTopOf="@+id/DayText"
             app:layout_constraintStart_toStartOf="parent" />
@@ -110,6 +101,7 @@
             android:layout_height="52dp"
             android:background="@color/design_default_color_surface"
             android:src="@drawable/ic_chevron_right_black_24dp"
+            android:contentDescription="@string/content_desc_next_day"
             app:layout_constraintTop_toTopOf="@+id/DayText"
             app:layout_constraintBottom_toBottomOf="@id/DayText"
             app:layout_constraintEnd_toEndOf="parent" />
