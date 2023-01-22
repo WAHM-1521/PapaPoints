@@ -57,20 +57,20 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        return when(item.itemId) {
             R.id.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun manageCalendarButtons()
     {
         val textView = findViewById<TextView>(R.id.DayText)  // Get a reference to the TextView in the ViewPager
-        val dateFormat = SimpleDateFormat("dd MMM yy")
+        val dateFormat = SimpleDateFormat("dd MMM yy", Locale.ENGLISH)
         val prevButton = findViewById<ImageButton>(R.id.prev_day_button)
         val nextButton = findViewById<ImageButton>(R.id.next_day_button)
         val mediaPlayer = MediaPlayer.create(this, R.raw.button_click_calendar)
@@ -122,7 +122,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     }
 
     private fun showChildDetails(child:Child) {
-        val dateFormat = SimpleDateFormat("dd MMM yy")
+        val dateFormat = SimpleDateFormat("dd MMM yy", Locale.ENGLISH)
         val dateText = findViewById<TextView>(R.id.DayText)
         dateText.text = dateFormat.format(Calendar.getInstance().time)
 
@@ -132,7 +132,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         val imageView = findViewById<ImageView>(R.id.imageView)
         val gender = child.gender
         LogHelper(this).d("Gender is $gender")
-        if(gender.equals("Male")) {
+        if(gender == "Male") {
             imageView.setImageResource(R.drawable.ic_male)
         }
     }
@@ -192,7 +192,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
                     val taskName = taskEditText.text.trimStart().substring(0, 1)
                         .uppercase(Locale.ROOT) + taskEditText.text.trimStart()
                         .substring(1)
-                    val task = Task(0, taskName,true, true)
+                    val task = Task(0, taskName, enabled = true, user_defined = true)
                     mainScope.launch (Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).taskDao().insert(task)
                         refreshTasks(SwipeDirection.NONE)
@@ -238,7 +238,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             val selectedDate = getCalendarDateForMidnightTime(calendar)
             val existingRating =
                 AppDatabase.getInstance(applicationContext).ratingDao().getByTaskId(taskID, selectedDate)
-            LogHelper(this).d("existing rating for task ${taskID} is $existingRating")
+            LogHelper(this).d("existing rating for task $taskID is $existingRating")
             if (existingRating.isNotEmpty()) {
                 val ratingToSave = Rating(
                     ratingId = existingRating[0].ratingId,

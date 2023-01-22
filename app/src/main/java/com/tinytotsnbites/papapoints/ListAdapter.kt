@@ -100,13 +100,12 @@ class ListAdapter(activity: PointsAndTaskActivity, data: List<Item>) : BaseAdapt
         }
 
         view.setOnLongClickListener {
-                parent ->
             val builder = AlertDialog.Builder(view.context)
             builder.setTitle(R.string.delete_task)
             builder.setMessage(R.string.delete_task_confirm_msg)
-            builder.setPositiveButton(R.string.yes) { dialog, which ->
+            builder.setPositiveButton(R.string.yes) { _, _ ->
                 if(item.rating != 0) {
-                    Snackbar.make(parent, R.string.delete_task_error, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(it, R.string.delete_task_error, Snackbar.LENGTH_LONG).show()
                 } else {
                     listener?.onDeleteTask(item.taskID)
                 }

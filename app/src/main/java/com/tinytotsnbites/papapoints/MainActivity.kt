@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
         var selectedGender = ""
-        radioGroupGender.setOnCheckedChangeListener { group, checkedId ->
+        radioGroupGender.setOnCheckedChangeListener { _, checkedId ->
              selectedGender = when (checkedId) {
                 R.id.radio_button_male -> "Male"
                 R.id.radio_button_female -> "Female"
