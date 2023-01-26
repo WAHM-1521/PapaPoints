@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                         AppDatabase.getInstance(applicationContext).childDao().insert(child)
                         getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putString("gender",selectedGender).apply()
                         withContext(Dispatchers.Main) {
-                            scheduleNotification(applicationContext)
+                            //scheduleNotification(applicationContext)
                             startPointsTaskActivity()
                         }
                     }

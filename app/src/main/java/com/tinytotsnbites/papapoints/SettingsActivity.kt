@@ -116,7 +116,7 @@ class SettingsActivity : AppCompatActivity() {
             val soundPreference = findPreference<SwitchPreference>("sound_preference")
             soundPreference?.setOnPreferenceChangeListener { _, newValue ->
                 val soundOn = newValue as Boolean
-                sharedPreferences.edit().putBoolean("sound_preference", newValue).apply()
+                sharedPreferences.edit().putBoolean("sound_preference", soundOn).apply()
                 LogHelper(this).i("sound is ON $soundOn")
                 true
             }
@@ -125,9 +125,15 @@ class SettingsActivity : AppCompatActivity() {
             val notificationPreference =
                 findPreference<SwitchPreference>("notification_preference")
             notificationPreference?.setOnPreferenceChangeListener { _, newValue ->
-                sharedPreferences.edit().putBoolean("notification_preference", newValue as Boolean)
+                val notificationOn = newValue as Boolean
+                sharedPreferences.edit().putBoolean("notification_preference", notificationOn)
                     .apply()
-                LogHelper(this).i("Notification is ON $newValue")
+                LogHelper(this).i("Notification set is $newValue")
+                if(!notificationOn) {
+                    context?.let { cancelNotification(it) }
+                } else {
+                    context?.let { scheduleNotification(it) }
+                }
                 true
             }
 

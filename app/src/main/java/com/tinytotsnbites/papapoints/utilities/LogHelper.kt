@@ -1,6 +1,7 @@
 package com.tinytotsnbites.papapoints.utilities
 
 import android.util.Log
+import com.tinytotsnbites.papapoints.BuildConfig
 
 class LogHelper(val context: Any, private val charLimit: Int = 20) {
     companion object {
@@ -17,7 +18,8 @@ class LogHelper(val context: Any, private val charLimit: Int = 20) {
     }
 
     fun d(message: String) {
-        Log.d(getTag(context), message)
+        if(BuildConfig.DEBUG)
+            Log.d(getTag(context), message)
     }
 
     fun e(message: String) {
@@ -29,7 +31,8 @@ class LogHelper(val context: Any, private val charLimit: Int = 20) {
     }
 
     fun v(message: String) {
-        Log.v(getTag(context), message)
+        if(BuildConfig.DEBUG)
+            Log.v(getTag(context), message)
     }
 
     fun w(message: String) {

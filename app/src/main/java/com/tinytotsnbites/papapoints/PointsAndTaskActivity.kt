@@ -49,6 +49,11 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         refreshTasks(SwipeDirection.NONE)
         manageCalendarButtons()
         manageAddingNewTask()
+        if(PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("notification_preference", true)) {
+            scheduleNotification(applicationContext)
+        } else {
+            cancelNotification(applicationContext)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
