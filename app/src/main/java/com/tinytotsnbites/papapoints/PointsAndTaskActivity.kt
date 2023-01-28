@@ -1,7 +1,10 @@
 package com.tinytotsnbites.papapoints
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -104,8 +107,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
     override fun onResume() {
         super.onResume()
         if(getSharedPreferences("prefs", Context.MODE_PRIVATE)
-                .getBoolean("child_name_updated",true)
-        ) {
+                .getBoolean("child_name_updated",true)) {
             populateChildDetails()
             //Update the child_detail_updated_boolean on sharedPref false
             getSharedPreferences("prefs", Context.MODE_PRIVATE)
@@ -114,6 +116,10 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
                 .apply()
             LogHelper(this).d("on Resume child name updates: Points & Task ")
         }
+
+        // Cancel the notification if the app is already in the foreground.
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(NOTIFICATION_ID)
     }
 
     private fun populateChildDetails() {
@@ -186,6 +192,12 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null)
             val taskEditText = dialogView.findViewById<EditText>(R.id.taskNameEditText)
             val addButton = dialogView.findViewById<Button>(R.id.addButton)
+
+            // Add border to dialogView
+            val drawable = GradientDrawable()
+            //TODO - Set the border color as per the theme.
+            drawable.setStroke(2, Color.BLACK)
+            dialogView.background = drawable
 
             val alertDialog = AlertDialog.Builder(this)
                 .setView(dialogView)
