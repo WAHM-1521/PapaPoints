@@ -31,32 +31,27 @@ fun onActivitySetTheme(activity: Activity, theme: Int) {
 
 fun scheduleNotification(context: Context) {
     val intent = Intent(context, NotificationReceiver::class.java)
-    val pendingIntent = PendingIntent.getBroadcast(context,0,intent, PendingIntent.FLAG_NO_CREATE)
+    val pendingIntent = PendingIntent.getBroadcast(context,0,intent, PendingIntent.FLAG_IMMUTABLE)
 
-    if(pendingIntent != null ) {
-        LogHelper(context).i("Alarm has already been setup for notification")
-        return
-    } else {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 21)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-        val newPendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            newPendingIntent
-        )
-        LogHelper(context).i("scheduleNotification for ${calendar.time}")
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 21)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
     }
+    alarmManager.cancel(pendingIntent)
+    alarmManager.setRepeating(
+        AlarmManager.RTC_WAKEUP,
+        calendar.timeInMillis,
+        AlarmManager.INTERVAL_DAY,
+        pendingIntent
+    )
+    LogHelper(context).i("scheduleNotification for ${calendar.time}")
 }
 
 fun cancelNotification(context: Context) {
     val intent = Intent(context, NotificationReceiver::class.java)
-    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE)
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
     if(pendingIntent != null) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
