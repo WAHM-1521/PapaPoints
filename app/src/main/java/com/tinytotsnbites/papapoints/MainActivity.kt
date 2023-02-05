@@ -13,6 +13,9 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.tinytotsnbites.papapoints.data.AppDatabase
 import com.tinytotsnbites.papapoints.data.Child
 import com.tinytotsnbites.papapoints.utilities.LogHelper
@@ -28,6 +31,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var analytics: FirebaseAnalytics
     private var dateOfBirth = Date()
     private lateinit var dobEditText: EditText
 
@@ -41,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         splashScreen.setKeepOnScreenCondition {
             keepSplashScreen
         }
+
+        analytics = Firebase.analytics
+        analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN,null)
         // Uncomment the below line to see the splash screen for 5 seconds.
         // Thread.sleep(5000)
 

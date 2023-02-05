@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -46,6 +47,8 @@ dependencies {
     def work_version = "2.7.1"
     def splashScreenVersion = "1.0.0"
 
+    implementation 'com.google.firebase:firebase-common-ktx:20.3.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.2'
     implementation "androidx.core:core-splashscreen:$splashScreenVersion"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
