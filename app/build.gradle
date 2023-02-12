@@ -53,15 +53,17 @@ android {
 
     buildTypes {
         debug {
-            //applicationIdSuffix ".debug"
+            applicationIdSuffix ".debug"
             minifyEnabled false
             debuggable true
+            resValue 'string', 'app_name', '"Papa Points Debug"'
         }
         release {
             minifyEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            resValue 'string', 'app_name', '"Papa Points"'
         }
     }
     compileOptions {

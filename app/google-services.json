@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229729202352:android:fa0c7c561306f9d4f10b75",
+        "android_client_info": {
+          "package_name": "com.tinytotsnbites.papapoints.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229729202352-9srsqk6mhd37acn5sl3fp7dstouls8sr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF28r1Iw8mvvsCjhpSjd6GFbB8hYRQOwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229729202352-9srsqk6mhd37acn5sl3fp7dstouls8sr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
