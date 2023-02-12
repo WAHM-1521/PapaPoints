@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -151,7 +152,6 @@ class SettingsActivity : AppCompatActivity() {
                 if (pm?.let { it1 -> emailIntent.resolveActivity(it1) } != null) {
                     startActivity(emailIntent)
                     LogHelper(this).d("feedback activity set $emailIntent")
-
                 } else {
                     view?.let {
                         LogHelper(this).w("No email client found in the device")
@@ -165,7 +165,6 @@ class SettingsActivity : AppCompatActivity() {
             val rateUsPreference = findPreference<Preference>("rate_us_preference")
             rateUsPreference?.setOnPreferenceClickListener {
                 val appPackageName = APP_NAME
-                val pm = context?.packageManager
                 val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse("$PLAY_STORE_URL=$appPackageName")
                     setPackage(PLAY_STORE)
@@ -178,31 +177,26 @@ class SettingsActivity : AppCompatActivity() {
             val aboutUsPreference = findPreference<Preference>("about_us_preference")
             aboutUsPreference?.setOnPreferenceClickListener {
                 val builder = view?.let { it1 -> AlertDialog.Builder(it1.context) }
-                val dialog: AlertDialog? = builder?.create()
-//                dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-//                    ?.setBackgroundResource(R.style.button_style_girl)
+                builder?.create()
                 builder?.setTitle(R.string.about_us_title)
-                val packageInfo = requireContext().packageManager
-                    .getPackageInfo(requireContext()
-                    .packageName, 0)
-                val versionNumber = packageInfo.versionName
+                val versionNumber = BuildConfig.VERSION_NAME
                 builder?.setMessage("Version: $versionNumber")
-
-                builder?.setPositiveButton(R.string.about_us_dialog_button) { dialog, which ->
+                builder?.setPositiveButton(R.string.about_us_dialog_button) { _, _ ->
                 }
                 builder?.show()
-                //dialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setBackgroundResource(R.style.button_style_girl)
                 true
             }
 
             //Logout
-            //TODO clear any active notifications reminder
             val logoutPreference = findPreference<Preference>("logout_preference")
             logoutPreference?.setOnPreferenceClickListener {
                 val builder = view?.let { it1 -> AlertDialog.Builder(it1.context) }
                 builder?.setTitle(R.string.logout_title)
                 builder?.setMessage(R.string.logout_preference_message)
-                builder?.setPositiveButton(R.string.yes) { dialog, which ->
+                builder?.setPositiveButton(R.string.yes) { _, _ ->
+                    //clearing Notifications
+                    val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.cancel(NOTIFICATION_ID)
                     //clearing data for Preference Manager
                     val sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -225,12 +219,15 @@ class SettingsActivity : AppCompatActivity() {
                         database.ratingDao().deleteAll()
                         database.taskDao().deleteUserDefinedTasks()
                         database.taskDao().enableAll()
+                        withContext(Dispatchers.Main)
+                        {
+                            val intent = Intent(requireContext(), MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            LogHelper(this).d("finishing Points & Task ")
+                        }
                     }
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    LogHelper(this).d("finishing Points & Task ")
                 }
                 builder?.setNegativeButton("No") { _, _ -> }
                 builder?.show()
