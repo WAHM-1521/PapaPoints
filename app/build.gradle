@@ -5,8 +5,18 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+// Creates a variable called keystorePropertiesFile, and initializes it to the
+// keystore.properties file.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initializes a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Loads the keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     ext {
         versionMajor = 1
@@ -17,7 +27,7 @@ android {
     defaultConfig {
         applicationId "com.tinytotsnbites.papapoints"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         setProperty("archivesBaseName","PapaPoints-${versionName}")
@@ -32,14 +42,26 @@ android {
         }
     } */
 
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     buildTypes {
         debug {
+            //applicationIdSuffix ".debug"
             minifyEnabled false
             debuggable true
         }
         release {
             minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
