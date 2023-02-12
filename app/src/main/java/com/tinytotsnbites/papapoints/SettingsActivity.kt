@@ -198,9 +198,8 @@ class SettingsActivity : AppCompatActivity() {
                     val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.cancel(NOTIFICATION_ID)
                     //clearing data for Preference Manager
-                    val sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    val preferenceManagerEditor = sharedPreferences.edit()
+                    val preferenceManagerEditor = PreferenceManager.
+                        getDefaultSharedPreferences(requireContext()).edit()
                     preferenceManagerEditor.clear()
                     preferenceManagerEditor.apply()
                     //clearing SharedPreferences for gender

@@ -2,7 +2,6 @@ package com.tinytotsnbites.papapoints.workers
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.tinytotsnbites.papapoints.R
@@ -11,7 +10,6 @@ import com.tinytotsnbites.papapoints.data.AppDatabase
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class PapaPointsDatabaseWorker(
     context: Context,
@@ -22,7 +20,7 @@ class PapaPointsDatabaseWorker(
         try {
             val database  = AppDatabase.getInstance(applicationContext)
             val taskList: List<Task> = applicationContext.resources.getStringArray(R.array.tasks).mapIndexed {
-                    index, task -> Task(0, task, true, false)
+                    _, task -> Task(0, task, true, false)
             }
             database.taskDao().insertAll(taskList)
             Result.success()
@@ -33,6 +31,5 @@ class PapaPointsDatabaseWorker(
     }
 
     companion object {
-        private const val TAG = "PapaPoints"
     }
 }
