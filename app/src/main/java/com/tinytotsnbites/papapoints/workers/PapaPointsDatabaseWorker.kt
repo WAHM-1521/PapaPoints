@@ -1,6 +1,5 @@
 package com.tinytotsnbites.papapoints.workers
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -15,7 +14,6 @@ class PapaPointsDatabaseWorker(
     context: Context,
     workerParams : WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
-    @SuppressLint("LongLogTag")
     override suspend fun doWork(): Result = withContext(Dispatchers.IO){
         try {
             val database  = AppDatabase.getInstance(applicationContext)
@@ -28,8 +26,5 @@ class PapaPointsDatabaseWorker(
             LogHelper(this).e("Error seeding database $ex")
             Result.failure()
         }
-    }
-
-    companion object {
     }
 }
