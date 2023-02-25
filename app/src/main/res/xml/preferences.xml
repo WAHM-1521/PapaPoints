@@ -4,61 +4,72 @@
 
     <PreferenceCategory
         app:key="child_category"
-        app:title="Child Profile">
+        app:title="Child Profile"
+        app:iconSpaceReserved="false">
 
         <EditTextPreference
             android:defaultValue=""
             android:key="edit_child_name_preference"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Edit Child Name" />
+            android:title="Edit Child Name"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="notifications_category"
-        app:title="Notifications">
+        app:title="Notifications"
+        app:iconSpaceReserved="false">
 
         <SwitchPreference
             app:defaultValue="true"
             app:key="notification_preference"
             app:summary="Notify everyday at 9:00pm"
-            app:title="Reminder" />
+            app:title="Reminder"
+            app:iconSpaceReserved="false"/>
 
         <SwitchPreference
             app:defaultValue="true"
             app:key="sound_preference"
             app:summary="Turn App Sounds On/Off"
-            app:title="Sound" />
+            app:title="Sound"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="support_category"
-        app:title="Support">
+        app:title="Support"
+        app:iconSpaceReserved="false">
 
         <Preference
             app:key="feedback_preference"
             app:summary="Report technical issues or suggest new features"
-            app:title="Send feedback" />
+            app:title="Send feedback"
+            app:iconSpaceReserved="false"/>
 
         <Preference
             app:key="rate_us_preference"
-            app:title="Rate Us" />
+            app:title="Rate Us"
+            app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="other_category"
-        app:title="Others">
+        app:title="Others"
+        app:iconSpaceReserved="false">
 
     <Preference
         app:key="about_us_preference"
-        app:title="About Us"/>
+        app:title="About Us"
+        app:iconSpaceReserved="false"/>
 
     <Preference
         app:key="logout_preference"
-        app:title="Logout"/>
+        app:title="Logout"
+        app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
 </PreferenceScreen>
