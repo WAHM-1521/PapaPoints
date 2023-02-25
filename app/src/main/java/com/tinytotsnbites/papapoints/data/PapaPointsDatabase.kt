@@ -1,12 +1,10 @@
 package com.tinytotsnbites.papapoints.data
 
 import android.content.Context
-import android.util.Log
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.WorkManager
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.workDataOf
 import com.tinytotsnbites.papapoints.utilities.Converters
 import com.tinytotsnbites.papapoints.utilities.DATABASE_NAME
 import com.tinytotsnbites.papapoints.utilities.LogHelper
@@ -45,9 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
                         }
                     }
                 )
-                .fallbackToDestructiveMigration()
                 .build()
         }
-
     }
 }
