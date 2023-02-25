@@ -23,6 +23,7 @@
         android:hint="@string/enter_task_name"
         android:layout_marginTop="24dp"
         android:maxLength ="25"
+        android:inputType="textCapWords"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -46,6 +46,7 @@ fun scheduleNotification(context: Context) {
         AlarmManager.INTERVAL_DAY,
         pendingIntent
     )
+    context.getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putBoolean("notificationScheduled",true).apply()
     LogHelper(context).i("scheduleNotification for ${calendar.time}")
 }
 
@@ -57,6 +58,7 @@ fun cancelNotification(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
         pendingIntent.cancel()
+        context.getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putBoolean("notificationScheduled",false).apply()
         LogHelper(context).i("cancelNotification")
     } else {
         LogHelper(context).i("Alarm has not been set, so there is nothing to cancel")

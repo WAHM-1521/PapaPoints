@@ -52,10 +52,9 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         refreshTasks(SwipeDirection.NONE)
         manageCalendarButtons()
         manageAddingNewTask()
-        if(PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("notification_preference", true)) {
+        if(PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("notification_preference", true) &&
+            !getSharedPreferences("prefs",Context.MODE_PRIVATE).getBoolean("notificationScheduled",false)) {
             scheduleNotification(applicationContext)
-        } else {
-            cancelNotification(applicationContext)
         }
     }
 

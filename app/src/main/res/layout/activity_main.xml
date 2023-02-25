@@ -61,7 +61,8 @@
                         android:hint="@string/child_name_hint"
                         android:inputType="text"
                         android:textCursorDrawable = "@null"
-                        android:cursorVisible="true"/>
+                        android:cursorVisible="true"
+                        android:autofillHints="name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/gender"
-            android:paddingRight="15dp"
+            android:paddingEnd="15dp"
             style="?textSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_group_gender"
@@ -112,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="center_horizontal"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/genderTextView"

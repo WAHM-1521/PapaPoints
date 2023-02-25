@@ -3,7 +3,6 @@ package com.tinytotsnbites.papapoints
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
 
 const val TEXT_VERTICAL_OFFSET = 10
