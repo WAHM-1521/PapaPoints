@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
-    <style name="Theme.PapaPoints" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PapaPoints" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/pink_medium_variant</item>
@@ -15,7 +15,7 @@
         <item name="android:fontFamily">@font/rubik</item>
     </style>
     
-    <style name="Theme.PapaPoints.Girl" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PapaPoints.Girl" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/pink_100</item>
         <item name="colorPrimaryVariant">@color/pink_medium_variant</item>
         <item name="colorOnPrimary">@color/pink_900</item>
@@ -33,7 +33,7 @@
 
     </style>
 
-    <style name="Theme.PapaPoints.Boy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PapaPoints.Boy" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/blue_100</item>
         <item name="colorPrimaryVariant">@color/blue_500</item>
         <item name="colorOnPrimary">@color/blue_900</item>
