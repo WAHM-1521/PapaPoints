@@ -71,7 +71,7 @@
         android:id="@+id/middleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
         <ImageButton
@@ -81,8 +81,8 @@
             android:background="@color/design_default_color_surface"
             android:src="@drawable/ic_chevron_left_black_24dp"
             android:contentDescription="@string/content_desc_prev_day"
-            app:layout_constraintBottom_toBottomOf="@id/DayText"
-            app:layout_constraintTop_toTopOf="@+id/DayText"
+            app:layout_constraintBottom_toBottomOf="@id/middleLayout"
+            app:layout_constraintTop_toTopOf="@+id/middleLayout"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -90,7 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?textRegular"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/middleLayout"
+            app:layout_constraintBottom_toBottomOf="@id/middleLayout"
             app:layout_constraintStart_toEndOf="@id/prev_day_button"
             app:layout_constraintEnd_toStartOf="@+id/next_day_button"
             tools:text="Today" />
@@ -102,8 +103,8 @@
             android:background="@color/design_default_color_surface"
             android:src="@drawable/ic_chevron_right_black_24dp"
             android:contentDescription="@string/content_desc_next_day"
-            app:layout_constraintTop_toTopOf="@+id/DayText"
-            app:layout_constraintBottom_toBottomOf="@id/DayText"
+            app:layout_constraintTop_toTopOf="@+id/middleLayout"
+            app:layout_constraintBottom_toBottomOf="@id/middleLayout"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
