@@ -2,6 +2,7 @@ package com.tinytotsnbites.papapoints.data
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.WorkManager
 import androidx.work.OneTimeWorkRequestBuilder
@@ -10,7 +11,7 @@ import com.tinytotsnbites.papapoints.utilities.DATABASE_NAME
 import com.tinytotsnbites.papapoints.utilities.LogHelper
 import com.tinytotsnbites.papapoints.workers.PapaPointsDatabaseWorker
 
-@Database(entities = [Child::class, Task::class, Rating::class], version = 3)
+@Database(entities = [Child::class, Task::class, Rating::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun childDao(): ChildDao
@@ -43,7 +44,14 @@ abstract class AppDatabase : RoomDatabase() {
                         }
                     }
                 )
+                .addMigrations(MIGRATION_3_4)
                 .build()
+        }
+
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE Child ADD COLUMN child_image_uri TEXT")
+            }
         }
     }
 }

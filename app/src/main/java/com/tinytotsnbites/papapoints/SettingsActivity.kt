@@ -79,7 +79,8 @@ class SettingsActivity : AppCompatActivity() {
                                     .uppercase(Locale.ROOT) + newName.trimStart()
                                     .substring(1),
                                 dob = child.dob,
-                                gender = child.gender
+                                gender = child.gender,
+                                childImageUri = child.childImageUri
                             )
                             // Update the child name in the database
                             context?.let {

@@ -2,6 +2,7 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {
                     LogHelper(this).d("Gender is $selectedGender and DOB is $dateOfBirth")
-                    val child = Child(1, childName, dateOfBirth, selectedGender)
+                    val child = Child(1, childName, dateOfBirth, selectedGender, Uri.EMPTY)
                     mainScope.launch(Dispatchers.IO) {
                         AppDatabase.getInstance(applicationContext).childDao().insert(child)
                         getSharedPreferences("prefs",Context.MODE_PRIVATE).edit().putString("gender",selectedGender).apply()

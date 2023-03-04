@@ -1,11 +1,13 @@
 package com.tinytotsnbites.papapoints
 
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,9 +18,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tinytotsnbites.papapoints.data.*
 import com.tinytotsnbites.papapoints.utilities.*
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -131,6 +136,7 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun showChildDetails(child:Child) {
         val dateFormat = SimpleDateFormat("dd MMM yy", Locale.ENGLISH)
         val dateText = findViewById<TextView>(R.id.DayText)
@@ -140,10 +146,37 @@ class PointsAndTaskActivity : AppCompatActivity(), ListAdapter.UpdatePointsList 
         nameTextView.text = child.name
 
         val imageView = findViewById<ImageView>(R.id.imageView)
-        val gender = child.gender
-        LogHelper(this).d("Gender is $gender")
-        if(gender == "Male") {
-            imageView.setImageResource(R.drawable.ic_male)
+        val requestOptions = RequestOptions()
+        if (child.gender == "Male") {
+            requestOptions.error(R.drawable.ic_male)
+        } else {
+            requestOptions.error(R.drawable.ic_female)
+        }
+        Glide.with(this)
+            .load(child.childImageUri)
+            .apply(requestOptions)
+            .into(imageView)
+
+        imageView.setOnClickListener {
+            TedImagePicker.with(this)
+                .showCameraTile(true)
+                .start { uri -> updateChildImage(uri, child) }
+        }
+    }
+
+    private fun updateChildImage(uri: Uri, child: Child) {
+        LogHelper(this).d("Uri is $uri")
+        val updateChildImageUri = Child(
+            childId = child.childId,
+            name = child.name,
+            dob = child.dob,
+            gender = child.gender,
+            childImageUri = uri)
+        mainScope.launch(Dispatchers.IO) {
+            AppDatabase.getInstance(applicationContext).childDao().update(updateChildImageUri)
+            withContext(Dispatchers.Main) {
+                findViewById<ImageView>(R.id.imageView).setImageURI(uri)
+            }
         }
     }
 

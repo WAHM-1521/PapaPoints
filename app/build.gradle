@@ -21,14 +21,14 @@ android {
     ext {
         versionMajor = 1
         versionMinor = 0
-        versionPatch = 0
+        versionPatch = 3
     }
 
     defaultConfig {
         applicationId "com.tinytotsnbites.papapoints"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 2
+        versionCode 5
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         setProperty("archivesBaseName","PapaPoints-${versionName}")
 
@@ -49,6 +49,10 @@ android {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
         }
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -81,6 +85,8 @@ dependencies {
     def work_version = "2.8.0"
     def splashScreenVersion = "1.0.0"
 
+    implementation 'io.github.ParkSangGwon:tedimagepicker:1.4.2'
+    implementation "com.github.bumptech.glide:glide:4.12.0"
     implementation 'com.google.firebase:firebase-common-ktx:20.3.0'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
     implementation "androidx.core:core-splashscreen:$splashScreenVersion"
