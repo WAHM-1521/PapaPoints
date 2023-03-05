@@ -20,8 +20,8 @@ android {
 
     ext {
         versionMajor = 1
-        versionMinor = 0
-        versionPatch = 3
+        versionMinor = 1
+        versionPatch = 0
     }
 
     defaultConfig {
