@@ -2,13 +2,16 @@ package com.tinytotsnbites.papapoints
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -41,6 +44,22 @@ class MainActivity : AppCompatActivity() {
 
         var keepSplashScreen = true
         val splashScreen = installSplashScreen()
+        val layoutInflater = layoutInflater
+        val view = layoutInflater.inflate(R.layout.splash_screen, null)
+        val imageView = view.findViewById<ImageView>(R.id.splash_screen_image_view)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Load the GIF file
+            Glide.with(this)
+                .load(R.drawable.ic_splash_screen)
+                .into(imageView)
+
+            LogHelper(this).d("build version is ${Build.VERSION.SDK_INT}")
+        } else {
+            // Load the app icon
+            //imageView.setImageResource(R.mipmap.ic_launcher_foreground)
+            LogHelper(this).d("build version is ${Build.VERSION_CODES.S}")
+        }
+        setContentView(view)
         splashScreen.setKeepOnScreenCondition {
             keepSplashScreen
         }
@@ -48,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         analytics = Firebase.analytics
         analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN,null)
         // Uncomment the below line to see the splash screen for 5 seconds.
-        // Thread.sleep(5000)
+         Thread.sleep(3000)
 
         var childDetails : List<Child>
         mainScope.launch(Dispatchers.IO) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Splash Screen Theme. -->
+    <!-- Theme for splashscreen -->
     <style name="Theme.AppSplash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/colorPrimary</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
@@ -12,4 +12,15 @@
         <item name="android:navigationBarColor">@color/pink_medium_variant</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <!-- Theme for API 32 and higher -->
+    <style name="Theme.AppSplashApi32" parent="Theme.AppSplash">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_screen</item>
+    </style>
+
+    <!-- Theme for API 31 and lower -->
+    <style name="Theme.AppSplashApi31" parent="Theme.AppSplash">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+    </style>
+
 </resources>
