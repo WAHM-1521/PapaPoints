@@ -34,12 +34,17 @@ fun scheduleNotification(context: Context) {
     val pendingIntent = PendingIntent.getBroadcast(context,0,intent, PendingIntent.FLAG_IMMUTABLE)
 
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    alarmManager.cancel(pendingIntent)
+
+    val sharedPreferences = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    val selectedHour = sharedPreferences.getInt("selected_hour", 21)
+    val selectedMinute = sharedPreferences.getInt("selected_minute", 0)
+
     val calendar = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, 21)
-        set(Calendar.MINUTE, 0)
+        set(Calendar.HOUR_OF_DAY, selectedHour)
+        set(Calendar.MINUTE, selectedMinute)
         set(Calendar.SECOND, 0)
     }
-    alarmManager.cancel(pendingIntent)
     alarmManager.setRepeating(
         AlarmManager.RTC_WAKEUP,
         calendar.timeInMillis,
