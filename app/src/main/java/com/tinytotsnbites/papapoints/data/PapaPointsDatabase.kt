@@ -51,6 +51,7 @@ abstract class AppDatabase : RoomDatabase() {
         private val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE Child ADD COLUMN child_image_uri TEXT")
+                database.execSQL("UPDATE Child SET child_image_uri = '' WHERE child_image_uri IS NULL")
             }
         }
     }
