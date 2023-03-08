@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.*
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.tinytotsnbites.papapoints.data.AppDatabase
 import com.tinytotsnbites.papapoints.data.Child
 import com.tinytotsnbites.papapoints.utilities.*
@@ -79,7 +81,8 @@ class SettingsActivity : AppCompatActivity() {
                                     .uppercase(Locale.ROOT) + newName.trimStart()
                                     .substring(1),
                                 dob = child.dob,
-                                gender = child.gender
+                                gender = child.gender,
+                                childImageUri = child.childImageUri
                             )
                             // Update the child name in the database
                             context?.let {
@@ -133,10 +136,13 @@ class SettingsActivity : AppCompatActivity() {
                 if(!notificationOn) {
                     context?.let { cancelNotification(it) }
                 } else {
-                    context?.let { scheduleNotification(it) }
+                    showTimePicker(notificationPreference)
+                    //context?.let { scheduleNotification(it) }
                 }
                 true
             }
+
+            updateNotificationSummary(notificationPreference)
 
             //Feedback
             val feedbackPreference = findPreference<Preference>("feedback_preference")
@@ -232,6 +238,49 @@ class SettingsActivity : AppCompatActivity() {
                 builder?.show()
                 true
             }
+        }
+
+        private fun updateNotificationSummary(notificationPreference: SwitchPreference?) {
+            val appSharedPreferences = requireContext()
+                .getSharedPreferences("prefs", MODE_PRIVATE)
+            val hour = appSharedPreferences.getInt("selected_hour", 21)
+            val minute = appSharedPreferences.getInt("selected_minute", 0)
+
+            notificationPreference?.summary =
+                getString(R.string.notify_summary, String.format("%02d:%02d", hour, minute))
+        }
+
+        private fun showTimePicker(notificationPreference: SwitchPreference?) {
+            val sharedPreferences = requireContext()
+                .getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
+            val setHour = sharedPreferences.getInt("selected_hour", 21)
+            val setMinute = sharedPreferences.getInt("selected_minute", 0)
+            val timePicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setTitleText(getString(R.string.select_time))
+                .setHour(setHour)
+                .setMinute(setMinute)
+                .build()
+
+            timePicker.addOnPositiveButtonClickListener {
+                // Save selected time in shared preferences
+                val editor = sharedPreferences.edit()
+                editor.putInt("selected_hour", timePicker.hour)
+                editor.putInt("selected_minute", timePicker.minute)
+                editor.apply()
+
+                updateNotificationSummary(notificationPreference)
+                scheduleNotification(requireContext())
+            }
+
+            timePicker.addOnNegativeButtonClickListener {
+                scheduleNotification(requireContext())
+            }
+            timePicker.addOnCancelListener {
+                scheduleNotification(requireContext())
+            }
+            timePicker.show(parentFragmentManager, "timePicker")
         }
     }
 }

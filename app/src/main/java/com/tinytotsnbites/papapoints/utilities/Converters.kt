@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints.utilities
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import java.util.*
 
@@ -12,5 +13,15 @@ class Converters {
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time?.toLong()
+    }
+
+    @TypeConverter
+    fun fromUri(uri: Uri): String {
+        return uri.toString()
+    }
+
+    @TypeConverter
+    fun toUri(uriString: String): Uri {
+        return Uri.parse(uriString)
     }
 }

@@ -1,5 +1,6 @@
 package com.tinytotsnbites.papapoints.data
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -11,7 +12,8 @@ data class Child(
     @PrimaryKey @ColumnInfo(name = "id") val childId: Long,
     @ColumnInfo(name = "child_name") val name: String?,
     @ColumnInfo(name = "child_DOB") val dob: Date,
-    @ColumnInfo(name = "child_gender") val gender: String
+    @ColumnInfo(name = "child_gender") val gender: String,
+    @ColumnInfo(name = "child_image_uri") val childImageUri: Uri?
 )
 
 @Entity
