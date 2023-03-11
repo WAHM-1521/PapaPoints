@@ -38,3 +38,28 @@ data class TaskWithRating(
     @Embedded val task: Task,
     @ColumnInfo(name = "rating") val rating: Int
 )
+
+@Entity
+data class Reward(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name  = "id") val rewardId: Long = 0,
+    @ColumnInfo(name = "reward_name") val rewardName: String,
+    @ColumnInfo(name = "enabled") val enabled: Boolean,
+    @ColumnInfo(name = "user_defined") val user_defined: Boolean,
+    @ColumnInfo(name = "points_required") val pointsRequired: Int,
+    @ColumnInfo(name = "image_url") val imageUrl: String?
+)
+
+@Entity
+data class Redeem(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val redeemId: Long,
+    @ColumnInfo(name = "child_id") val childId: Long,
+    @ColumnInfo(name = "reward_id") val rewardId: Long,
+    val redeem: Int,
+    val date: Date
+)
+
+@Entity
+data class RewardsRedeemed(
+    @Embedded val rewards: Reward,
+    @ColumnInfo(name = "redeem") val redeem: Int
+)

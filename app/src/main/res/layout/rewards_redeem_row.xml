@@ -7,7 +7,7 @@
     android:paddingEnd="10dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/rewardTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
@@ -18,13 +18,14 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
-        android:id="@+id/remove_points_button"
+        android:id="@+id/remove_reward_button"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="@string/minus"
         android:textSize="20sp"
         android:textStyle="bold"
         android:background="#00000000"
+        android:contentDescription="@string/remove_reward"
         style="?android:attr/borderlessButtonStyle"
         android:backgroundTint="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,13 +44,13 @@
         app:ratingValue="0"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/add_points_button"
-        app:layout_constraintStart_toStartOf="@id/add_points_button"
+        app:layout_constraintEnd_toStartOf="@id/add_reward_button"
+        app:layout_constraintStart_toStartOf="@id/add_reward_button"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
-        android:id="@+id/add_points_button"
+        android:id="@+id/add_reward_button"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:paddingEnd="10dp"
@@ -58,6 +59,7 @@
         android:textStyle="bold"
         android:backgroundTint="@color/cardview_light_background"
         android:background="#00000000"
+        android:contentDescription="@string/redeem_reward"
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

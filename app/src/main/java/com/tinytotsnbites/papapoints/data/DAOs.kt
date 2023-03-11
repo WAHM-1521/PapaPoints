@@ -92,3 +92,72 @@ interface RatingDao {
     fun getTotalRatingToday(today: Date): Int
 
 }
+
+
+@Dao
+interface RewardDao {
+    @Insert
+    fun insert(reward: Reward)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(reward : List<Reward>)
+
+    @Update
+    fun update(reward: Reward)
+
+    @Delete
+    fun delete(reward: Reward)
+
+    @Query("DELETE FROM reward WHERE user_defined = 1")
+    fun deleteUserDefinedRewards()
+
+    @Query("SELECT * FROM reward")
+    fun getAll(): List<Reward>
+
+    @Query("SELECT * FROM reward WHERE id = :id")
+    fun getById(id: Long): Reward
+
+    @Query("SELECT reward.*, redeem.redeem FROM reward LEFT JOIN redeem ON reward.id = redeem.reward_id AND redeem.date = :date WHERE (redeem.date IS NULL OR redeem.date = :date) AND reward.enabled = 1")
+    fun getRewardsRedeemedForDate(date: Date): List<RewardsRedeemed>
+
+    @Query("UPDATE reward SET enabled = 0 WHERE id = :rewardId")
+    fun disableReward(rewardId: Long)
+
+    //enable the reward which were earlier disabled during Delete Task
+    @Query("UPDATE reward SET enabled = 1 WHERE enabled = 0")
+    fun enableAll()
+}
+
+@Dao
+interface RedeemDao {
+    @Insert
+    fun insert(redeem: Redeem)
+
+    @Update
+    fun update(redeem: Redeem)
+
+    @Delete
+    fun delete(redeem: Redeem)
+
+    @Query("DELETE FROM redeem")
+    fun deleteAll()
+
+    @Query("SELECT * FROM redeem")
+    fun getAll(): List<Redeem>
+
+    @Query("SELECT * FROM redeem WHERE id = :id")
+    fun getById(id: Long): Redeem
+
+    @Query("SELECT * FROM redeem WHERE child_id = :childId")
+    fun getByChildId(childId: Long): List<Redeem>
+
+    @Query("SELECT * FROM redeem WHERE reward_id = :rewardId AND date = :date")
+    fun getByRewardId(rewardId: Long, date: Date): List<Redeem>
+
+    @Query("SELECT SUM(redeem) FROM redeem")
+    fun getTotalRewardsRedeemed(): Int
+
+    @Query("SELECT SUM(redeem) FROM redeem WHERE date = :today")
+    fun getTotalRewardsRedeemedToday(today: Date): Int
+
+}
